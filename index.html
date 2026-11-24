@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>BANA 310 Open-Book Cheat Sheet</title>
+<style>
+:root{--bg:#fbfaf7;--fg:#1d1d1b;--mut:#6b6a66;--line:#e2dfd7;--card:#fff;--acc:#1f6f6b;--code:#f3f1ea;--hl:#fff3b0}
+@media (prefers-color-scheme:dark){:root{--bg:#161615;--fg:#ecebe6;--mut:#a3a199;--line:#33322f;--card:#1e1e1c;--acc:#5ec4be;--code:#262624;--hl:#5a4d10}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.55 system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
+header{padding:28px 20px 14px;max-width:1100px;margin:0 auto}
+h1{margin:0 0 4px;font-size:1.8rem}
+header p{margin:0;color:var(--mut)}
+.bar{position:sticky;top:0;z-index:10;background:var(--bg);border-bottom:1px solid var(--line);padding:10px 20px}
+.bar .in{max-width:1100px;margin:0 auto;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+#q{flex:1;min-width:220px;padding:10px 12px;font-size:1rem;border:1px solid var(--line);border-radius:8px;background:var(--card);color:var(--fg)}
+#count{color:var(--mut);font-size:.9rem}
+.wrap{max-width:1100px;margin:0 auto;padding:0 20px 60px;display:grid;grid-template-columns:230px 1fr;gap:28px}
+nav{position:sticky;top:64px;align-self:start;max-height:calc(100vh - 80px);overflow:auto;font-size:.9rem;padding-top:16px}
+nav a{display:block;padding:4px 8px;color:var(--fg);text-decoration:none;border-radius:6px}
+nav a:hover{background:var(--code)}
+main{min-width:0}
+section{padding-top:20px}
+section>h2{font-size:1.35rem;margin:10px 0;border-bottom:2px solid var(--acc);padding-bottom:4px}
+.item{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px 16px;margin:14px 0}
+.item h3{margin:0 0 8px;font-size:1.05rem;color:var(--acc)}
+.use{margin:0 0 8px;color:var(--mut);font-size:.95rem}
+.code{position:relative;margin:10px 0}
+pre{margin:0;background:var(--code);border:1px solid var(--line);border-radius:8px;padding:12px;overflow:auto;font:13px/1.5 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+code.i{background:var(--code);border:1px solid var(--line);border-radius:4px;padding:0 4px;font:13px ui-monospace,Menlo,Consolas,monospace;word-break:break-word}
+.copy{position:absolute;top:6px;right:6px;font-size:12px;padding:3px 9px;border:1px solid var(--line);background:var(--card);color:var(--fg);border-radius:6px;cursor:pointer}
+.copy:hover{border-color:var(--acc)}
+table{border-collapse:collapse;width:100%;margin:10px 0;font-size:.93rem}
+th,td{border:1px solid var(--line);padding:6px 9px;text-align:left;vertical-align:top}
+th{background:var(--code)}
+.tw{overflow-x:auto}
+ul,ol{margin:6px 0 6px 22px;padding:0}
+li{margin:3px 0}
+mark{background:var(--hl);color:inherit;border-radius:2px}
+.qi{border-top:1px solid var(--line);padding:10px 0}
+.qi:first-child{border-top:0}
+.rev{font-size:13px;padding:4px 10px;border:1px solid var(--line);background:var(--card);color:var(--fg);border-radius:6px;cursor:pointer}
+.ans{margin-top:6px;padding:8px 10px;background:var(--code);border-left:3px solid var(--acc);border-radius:4px}
+.hide{display:none!important}
+@media (max-width:820px){.wrap{grid-template-columns:1fr}nav{display:none}}
+@media print{.bar,nav,.copy,.rev{display:none}.ans[hidden]{display:block!important}.wrap{display:block}.item{break-inside:avoid-page}}
+</style></head><body>
+<header><h1>BANA 310 Open-Book Cheat Sheet</h1>
+<p>Data Visualization for Business. Everything here comes from class slides, example notebooks and class CSVs. Press / to search.</p></header>
+<div class="bar"><div class="in"><input id="q" type="search" placeholder="Search a function, chart or term (e.g. pointplot, degree, stopwords)" autocomplete="off"><span id="count"></span></div></div>
+<div class="wrap"><nav><a href="#rules">1. Quiz-day rules and steps</a><a href="#setup">2. Setup, data handling and styling</a><a href="#finder">3. Which chart do I use?</a><a href="#categorical">4. Categorical variables</a><a href="#numeric">5. Numeric variables</a><a href="#groups">6. Numeric variable across groups (multivariate)</a><a href="#timeseries">7. Time series and trend line</a><a href="#models">8. Analytical models</a><a href="#interactive">9. Interactive graphs (sliders)</a><a href="#threed">10. 3D visualization</a><a href="#geo">11. Geo-spatial maps</a><a href="#network">12. Network visualization</a><a href="#radar">13. Radar chart</a><a href="#wordcloud">14. Text visualization: word cloud</a><a href="#bubble">15. Bubble chart (plotly)</a><a href="#survival">16. Survival analysis for business</a><a href="#project">17. Mushroom project (review of old charts)</a><a href="#concepts">18. Concepts and terms (glossary)</a><a href="#selftest">19. Rapid-fire self-test</a><a href="#errors">20. Errors and fixes</a></nav><main><section id="rules"><h2>1. Quiz-day rules and steps</h2><div class="item"><h3>Rules from class</h3><ul><li>Each coding task gets <b>exactly one graph</b>. More or fewer graphs lose points (applies to the test too).</li><li>Use <b>only functions taught in class</b>. Anything else can cost points. AI tools are allowed only with class material.</li><li>The radar exercise says: avoid unnecessary variables, repeated logic, redundant functions, or code that does not directly produce the graph. Points are deducted for redundant code.</li><li>A line plotted over <code class="i">t</code> must have y-values with the <b>same number of points as t</b>, even for a constant line (<code class="i">3000 + 0*t</code>).</li><li>Some important coding details (arguments, settings, error handling) were taught only in class exercises, so your own notes matter too.</li></ul></div><div class="item"><h3>Step by step on quiz day</h3><ol><li>Run the imports cell first (see section 2).</li><li>Load the CSV: <code class="i">df = pd.read_csv(&#x27;file.csv&#x27;)</code> then <code class="i">df.head()</code> to see the column names.</li><li>Read the task. Ask: what am I comparing? Pick the chart from the finder (section 3).</li><li>Start each graph with <code class="i">plt.figure(figsize=(5, 3))</code> and end it with <code class="i">plt.show()</code>.</li><li>If asked for a finding, write one plain sentence about what the graph shows.</li><li>Export: <code class="i">!jupyter nbconvert --to html yourfile.ipynb</code> (keep the notebook in the <b>content</b> folder).</li><li>Check: how many graphs did each task produce? Exactly one.</li></ol></div></section><section id="setup"><h2>2. Setup, data handling and styling</h2><div class="item"><h3>Imports (run first)</h3><div class="code"><button class="copy" type="button">Copy</button><pre><code>import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns</code></pre></div><p>Libraries added by newer topics (import only what the task needs):</p><div class="code"><button class="copy" type="button">Copy</button><pre><code>import networkx as nx                              # network
+import plotly.express as px                        # bubble chart, interactive 3D
+from wordcloud import WordCloud, STOPWORDS         # word cloud
+import PIL.Image                                   # word cloud mask image
+from lifelines import WeibullFitter                # survival (class also imported KaplanMeierFitter)
+!pip install lifelines                             # install first if missing
+import geopandas                                   # maps
+from geodatasets import get_path                   # map data
+from scipy.stats import norm                       # normal curve
+import ipywidgets as widgets                       # sliders
+from ipywidgets import interact, FloatSlider, interactive
+from IPython.display import display</code></pre></div><table><thead><tr><th>Library</th><th>What it is for</th></tr></thead><tbody><tr><td>pandas</td><td>DataFrames and Series: read files, clean, group, prepare values for charts</td></tr><tr><td>NumPy</td><td>Arrays and numerical functions: sequences, calculations</td></tr><tr><td>Matplotlib</td><td>Foundation plotting library: figures, axes, labels, colors, grids, layout</td></tr><tr><td>Seaborn</td><td>Built on Matplotlib: scatter, box, heatmap, regression, KDE and more</td></tr><tr><td>networkx</td><td>Build and draw networks</td></tr><tr><td>plotly.express</td><td>Interactive charts (bubble chart, 3D scatter)</td></tr><tr><td>wordcloud</td><td>Text frequency pictures</td></tr><tr><td>lifelines</td><td>Survival analysis</td></tr><tr><td>geopandas</td><td>Map data and plotting</td></tr></tbody></table></div><div class="item"><h3>Data handling calls</h3><p class="use"><b>Use when:</b> you need to prepare data before charting.</p><table><thead><tr><th>Code</th><th>What it does</th><th>When</th></tr></thead><tbody><tr><td><code class="i">pd.read_csv(&#x27;file.csv&#x27;)</code></td><td>Loads a CSV into a DataFrame</td><td>Start of every task</td></tr><tr><td><code class="i">df.head()</code></td><td>First 5 rows</td><td>Check column names</td></tr><tr><td><code class="i">df.dtypes</code></td><td>Data type of each column</td><td>Before date work</td></tr><tr><td><code class="i">df[&#x27;col&#x27;].value_counts()</code></td><td>Count of each label</td><td>Before pie or count plot</td></tr><tr><td><code class="i">df[&#x27;col&#x27;].value_counts().index.tolist()</code></td><td>Labels as a list</td><td>Pie labels</td></tr><tr><td><code class="i">df[&#x27;col&#x27;].value_counts().tolist()</code></td><td>Counts as a list</td><td>Pie values</td></tr><tr><td><code class="i">df[df[&#x27;col&#x27;] == &#x27;x&#x27;]</code></td><td>Keep rows where col equals x</td><td>Pick one group (class: Stanley, Labubus)</td></tr><tr><td><code class="i">df.loc[df[&#x27;col&#x27;].isin([&#x27;x&#x27;])]</code></td><td>Keep rows whose col is in the list</td><td>Pick one or more groups (class: Fashion)</td></tr><tr><td><code class="i">df.iloc[:, 0:11]</code></td><td>All rows, columns 0 to 10 (end excluded = 11 columns)</td><td>Drop the label column before correlation</td></tr><tr><td><code class="i">df.corr()</code></td><td>Correlation coefficients between numeric columns</td><td>Before a heatmap</td></tr><tr><td><code class="i">df[&#x27;Date&#x27;] = pd.to_datetime(df[&#x27;Date&#x27;])</code></td><td>Text to real dates</td><td>Before any date chart</td></tr><tr><td><code class="i">df[&#x27;Date&#x27;].map(pd.Timestamp.toordinal)</code></td><td>Dates to day numbers</td><td>Before polyfit</td></tr><tr><td><code class="i">df[&#x27;sex&#x27;].map({0: &#x27;Female&#x27;, 1: &#x27;Male&#x27;})</code></td><td>Replace codes with labels</td><td>Readable legends</td></tr><tr><td><code class="i">open(&#x27;file.txt&#x27;, &#x27;r&#x27;).read()</code></td><td>Reads a text file into one string</td><td>Word cloud text</td></tr></tbody></table></div><div class="item"><h3>Plot data and styling</h3><table><thead><tr><th>Code</th><th>What it does</th><th>When</th></tr></thead><tbody><tr><td><code class="i">np.linspace(start, stop, num)</code></td><td><code class="i">num</code> evenly spaced numbers, both ends included. More points = smoother curve.</td><td>x-values for a function or curve</td></tr><tr><td><code class="i">plt.figure(figsize=(5, 3))</code></td><td>Canvas width and height</td><td>Start of every graph</td></tr><tr><td><code class="i">plt.gca().set_facecolor(&#x27;lightgrey&#x27;)</code></td><td>Background color of the plot area</td><td>Style</td></tr><tr><td><code class="i">plt.grid()</code></td><td>Gridlines. Options: <code class="i">True</code>, <code class="i">axis='y'</code>, <code class="i">lw=0.5</code></td><td>Easier comparison</td></tr><tr><td><code class="i">plt.title(&#x27;...&#x27;)</code></td><td>Title</td><td>When asked</td></tr><tr><td><code class="i">plt.xticks(rotation=40)</code></td><td>Rotate x labels</td><td>Long labels</td></tr><tr><td><code class="i">plt.xlabel(&#x27;time&#x27;)</code></td><td><code class="i">plt.ylabel(&#x27;Popularity&#x27;)</code> set axis labels</td><td>When asked</td></tr><tr><td><code class="i">plt.legend()</code></td><td>Show labels given with <code class="i">label=</code></td><td>More than one line</td></tr><tr><td><code class="i">plt.gcf().autofmt_xdate()</code></td><td>Tilt date labels</td><td>Date x-axis</td></tr><tr><td><code class="i">plt.show()</code></td><td>Draws the graph</td><td>End of every graph</td></tr></tbody></table></div><div class="item"><h3>Line plots and curves</h3><p class="use"><b>Use when:</b> plotting a trend of a few values or a function.</p><div class="code"><button class="copy" type="button">Copy</button><pre><code># from lists (class: months and revenue)
+months = [&#x27;Jan&#x27;,&#x27;Feb&#x27;,&#x27;Mar&#x27;,&#x27;Apr&#x27;,&#x27;May&#x27;,&#x27;Jun&#x27;]
+revenue = [5000,7000,8000,6500,7200,9000]
+plt.figure(figsize=(5,3))
+sns.lineplot(x=months, y=revenue, color=&#x27;orchid&#x27;, lw=3, linestyle=&#x27;--&#x27;,
+             marker=&#x27;o&#x27;, markersize=10, mfc=&#x27;green&#x27;, mec=&#x27;black&#x27;)
+plt.grid()
+plt.show()
+
+# from a formula
+x = np.linspace(1, 10, 50)
+y = np.log(x)
+plt.figure(figsize=(5,3))
+plt.plot(x, y, color=&#x27;hotpink&#x27;, lw=5)
+plt.gca().set_facecolor(&#x27;lightgrey&#x27;)
+plt.grid()
+plt.show()</code></pre></div><p><code class="i">lw</code> line width. <code class="i">linestyle=&#x27;--&#x27;</code> dashed. <code class="i">marker</code> point shape ('o', 'X', 'p', 'D', 'P'). <code class="i">markersize</code> point size. <code class="i">mfc</code> marker fill color. <code class="i">mec</code> marker edge color.</p></div><div class="item"><h3>Export to HTML</h3><div class="code"><button class="copy" type="button">Copy</button><pre><code>!jupyter nbconvert --to html xxx.ipynb</code></pre></div><p>Replace <code class="i">xxx.ipynb</code> with your notebook name. Error <code class="i">pattern 'x.ipynb' matched no files</code> means the name or folder is wrong. Keep the notebook in the <b>content</b> folder.</p></div></section><section id="finder"><h2>3. Which chart do I use?</h2><div class="item"><h3>Chart finder (data type decides the chart)</h3><table><thead><tr><th>The question says...</th><th>Use</th><th>Core call</th></tr></thead><tbody><tr><td>Count of each label, 5 or fewer, part of whole</td><td>Pie or donut</td><td><code class="i">plt.pie</code></td></tr><tr><td>Count of each label, any number</td><td>Count plot</td><td><code class="i">sns.countplot</code></td></tr><tr><td>Shape or spread of one number</td><td>Histogram or KDE</td><td><code class="i">sns.histplot</code>, <code class="i">sns.kdeplot</code></td></tr><tr><td>Two numbers related</td><td>Scatter</td><td><code class="i">sns.scatterplot</code></td></tr><tr><td>Many numbers related</td><td>Correlation heatmap</td><td><code class="i">sns.heatmap(df.corr())</code></td></tr><tr><td>Number by group: median, spread, outliers</td><td>Box plot</td><td><code class="i">sns.catplot(kind=&#x27;box&#x27;)</code></td></tr><tr><td>Number by group: shape</td><td>Violin or KDE with hue</td><td><code class="i">sns.violinplot</code>, <code class="i">sns.kdeplot(hue=)</code></td></tr><tr><td>Number by group: mean and interval</td><td>Point plot</td><td><code class="i">sns.pointplot</code></td></tr><tr><td>Number over dates</td><td>Line plot, plus trend line</td><td><code class="i">sns.lineplot</code>, <code class="i">np.polyfit</code></td></tr><tr><td>Draw a formula</td><td>Line over linspace</td><td><code class="i">plt.plot(t, y)</code></td></tr><tr><td>A formula of x and y</td><td>3D surface</td><td><code class="i">ax.plot_surface</code></td></tr><tr><td>Three numbers in 3D</td><td>3D scatter</td><td><code class="i">ax.scatter</code>, <code class="i">px.scatter_3d</code></td></tr><tr><td>Who connects to whom</td><td>Network</td><td><code class="i">nx.DiGraph</code>, <code class="i">nx.draw_networkx_*</code></td></tr><tr><td>Several scores for one or two items</td><td>Radar chart</td><td><code class="i">plt.subplot(polar=True)</code></td></tr><tr><td>Most frequent words</td><td>Word cloud</td><td><code class="i">WordCloud(...).generate(text)</code></td></tr><tr><td>Two numbers plus size and color</td><td>Bubble chart</td><td><code class="i">px.scatter(size=, color=)</code></td></tr><tr><td>Time until an event, with censoring</td><td>Survival curve</td><td><code class="i">WeibullFitter().fit(...)</code></td></tr><tr><td>Places on a map</td><td>Geo plot</td><td><code class="i">GeoDataFrame</code>, <code class="i">gdf.plot</code></td></tr><tr><td>Change a parameter and watch</td><td>Slider</td><td><code class="i">interactive(func, a=(lo, hi))</code></td></tr></tbody></table></div><div class="item"><h3>Pie vs count plot</h3><ul><li>Pie or donut works best with <b>5 labels or fewer</b>. With more slices, people cannot compare angles and areas.</li><li>More than five labels: use a <b>count plot</b>. Bars share a common baseline, so differences are easy to see.</li></ul></div></section><section id="categorical"><h2>4. Categorical variables</h2><div class="item"><h3>Count plot</h3><p class="use"><b>Use when:</b> counting rows per label. Any number of labels.</p><div class="code"><button class="copy" type="button">Copy</button><pre><code>plt.figure(figsize=(5, 3))
+sns.countplot(data=df, x=&#x27;gender&#x27;, hue=&#x27;gender&#x27;,
+              palette={&#x27;female&#x27;:&#x27;hotpink&#x27;, &#x27;male&#x27;:&#x27;skyblue&#x27;})
+plt.show()
+
+# as percent
+sns.countplot(data=df, x=&#x27;gender&#x27;, hue=&#x27;gender&#x27;,
+              palette={&#x27;female&#x27;:&#x27;hotpink&#x27;, &#x27;male&#x27;:&#x27;skyblue&#x27;}, stat=&quot;percent&quot;)
+
+# long labels
+plt.figure(figsize=(5,4))
+sns.countplot(data=df, x=&quot;parental_education&quot;, hue=&#x27;parental_education&#x27;, stat=&#x27;percent&#x27;)
+plt.xticks(rotation=40)
+plt.show()</code></pre></div><p><code class="i">hue</code> colors by category. <code class="i">palette</code> a dict of label to color. <code class="i">stat=&#x27;percent&#x27;</code> shows percent instead of counts.</p></div><div class="item"><h3>Pie chart</h3><p class="use"><b>Use when:</b> part-to-whole with 5 labels or fewer.</p><div class="code"><button class="copy" type="button">Copy</button><pre><code>gender = df[&#x27;gender&#x27;].value_counts().index.tolist()
+gender_color = [&#x27;hotpink&#x27;, &#x27;skyblue&#x27;]
+gender_freq = df[&#x27;gender&#x27;].value_counts().tolist()
+plt.figure(figsize=(4, 4))
+plt.pie(gender_freq, labels=gender, colors=gender_color, autopct=&#x27;%1.2f%%&#x27;)
+plt.show()
+
+# from your own lists
+prod = [500, 300]
+prod_name = [&#x27;iphone&#x27;, &#x27;ipad&#x27;]
+color = [&#x27;lightblue&#x27;, &#x27;steelblue&#x27;]
+plt.pie(prod, labels=prod_name, colors=color, autopct=&#x27;%1.2f%%&#x27;)</code></pre></div><p><code class="i">autopct=&#x27;%1.2f%%&#x27;</code> prints each slice's percent with 2 decimals (<code class="i">%1.0f%%</code> no decimals). <code class="i">labels</code> names. <code class="i">colors</code> slice colors.</p></div><div class="item"><h3>Donut chart</h3><p class="use"><b>Use when:</b> a pie with a clean look, same 5-label limit.</p><div class="code"><button class="copy" type="button">Copy</button><pre><code>plt.figure(figsize=(4, 4))
+plt.pie(gender_freq, labels=gender, colors=gender_color, autopct=&#x27;%1.1f%%&#x27;,
+        startangle=90, wedgeprops={&quot;width&quot;: 0.5})
+plt.show()</code></pre></div><p><code class="i">wedgeprops={&quot;width&quot;: 0.5}</code> cuts the center hole. <code class="i">startangle</code> rotates where the first slice starts.</p></div></section><section id="numeric"><h2>5. Numeric variables</h2><div class="item"><h3>Histogram and KDE</h3><p class="use"><b>Use when:</b> one numeric variable.</p><div class="code"><button class="copy" type="button">Copy</button><pre><code>plt.figure(figsize=(5, 3))
+sns.histplot(data=df, x=&#x27;math_score&#x27;, color=&#x27;green&#x27;)                      # basic
+sns.histplot(data=df, x=&#x27;math_score&#x27;, color=&#x27;green&#x27;, fill=False)          # outline only
+sns.histplot(data=df, x=&#x27;math_score&#x27;, color=&#x27;green&#x27;, binwidth=8, alpha=0.5)  # bin width
+sns.histplot(data=df, x=&#x27;math_score&#x27;, color=&#x27;green&#x27;, kde=True)            # add smooth line
+sns.histplot(data=df, x=&quot;math_score&quot;, bins=20, fill=False, kde=True, color=&#x27;teal&#x27;)
+sns.kdeplot(data=df, x=&#x27;math_score&#x27;, fill=True, color=&#x27;green&#x27;)            # curve only
+plt.show()</code></pre></div><p><b>Run one chart per figure on the quiz</b> (the lines above show variations, not one cell). <code class="i">bins</code> number of bars, <code class="i">binwidth</code> width of each bar, <code class="i">kde=True</code> adds the curve, <code class="i">fill</code> fills under the shape, <code class="i">alpha</code> transparency.</p><p>Histogram: bars count values in each bin. KDE: a smooth version without bin edges. Look at shape, center, spread, outliers.</p></div><div class="item"><h3>Scatter plot</h3><p class="use"><b>Use when:</b> two numeric variables.</p><div class="code"><button class="copy" type="button">Copy</button><pre><code>plt.figure(figsize=(5, 3))
+sns.scatterplot(data=df, x=&#x27;reading_score&#x27;, y=&#x27;math_score&#x27;, color=&#x27;grey&#x27;)
+plt.grid(True)
+plt.show()
+
+plt.figure(figsize=(5, 3))
+sns.scatterplot(data=df, x=&#x27;reading_score&#x27;, y=&#x27;math_score&#x27;, hue=&#x27;gender&#x27;,
+                marker=&#x27;o&#x27;, s=50, alpha=0.6,
+                palette={&#x27;female&#x27;:&#x27;#f15bb5&#x27;, &#x27;male&#x27;:&#x27;blue&#x27;})
+plt.grid(True)
+plt.show()</code></pre></div><p><code class="i">s</code> dot size, <code class="i">alpha</code> transparency (helps overlapping dots), <code class="i">hue</code> colors by group. Look for direction, strength, clusters, outliers and curves.</p><p>Class findings: math and reading scores are strongly positively correlated; at the same reading level, males scored slightly higher in math; reading vs writing showed no real gender difference.</p></div><div class="item"><h3>Correlation heatmap</h3><p class="use"><b>Use when:</b> many numeric variables.</p><div class="code"><button class="copy" type="button">Copy</button><pre><code>new_df = df.iloc[:, 0:11]          # numeric columns only (exclude the quality label)
+coco = new_df.corr()               # correlation coefficients
+
+plt.figure(figsize=(6, 6))
+sns.heatmap(coco, square=True, cmap=&#x27;PiYG_r&#x27;, linewidth=0.5, vmin=-1, vmax=1)
+plt.xticks(rotation=70)
+plt.show()
+
+# half heatmap with numbers
+tri_matrix = np.triu(coco)         # upper triangle (used as the mask)
+plt.figure(figsize=(6, 6))
+sns.heatmap(coco, square=True, cmap=&#x27;PiYG_r&#x27;, linewidth=0.5, vmin=-1, vmax=1,
+            mask=tri_matrix, annot=True, fmt=&#x27;.1f&#x27;)
+plt.xticks(rotation=70)
+plt.show()</code></pre></div><table><thead><tr><th>Parameter</th><th>Meaning</th></tr></thead><tbody><tr><td><code class="i">square=True</code></td><td>Square cells</td></tr><tr><td><code class="i">cmap</code></td><td>Color map (PiYG_r: pink for negative, green for positive)</td></tr><tr><td><code class="i">linewidth</code></td><td>Gap between cells</td></tr><tr><td><code class="i">vmin / vmax</code></td><td>Color scale limits; -1 and 1 for correlations</td></tr><tr><td><code class="i">mask</code></td><td>Cells to hide (np.triu hides the upper triangle so each pair shows once)</td></tr><tr><td><code class="i">annot=True</code></td><td>Print the numbers</td></tr><tr><td><code class="i">fmt=&#x27;.1f&#x27;</code></td><td>One decimal</td></tr></tbody></table><p>Reading it: near 1 = strong positive linear relationship, near -1 = strong negative, near 0 = weak. Correlation does not prove causation.</p></div><div class="item"><h3>2D density and relationship views</h3><div class="code"><button class="copy" type="button">Copy</button><pre><code>plt.figure(figsize=(4, 4))
+sns.kdeplot(data=df, x=&#x27;fixed acidity&#x27;, y=&#x27;alcohol&#x27;, color=&#x27;blue&#x27;)          # 2D contours
+
+plt.figure(figsize=(4, 4))                                                  # stacking: scatter + contours
+sns.scatterplot(data=df, x=&#x27;fixed acidity&#x27;, y=&#x27;alcohol&#x27;, color=&#x27;skyblue&#x27;)
+sns.kdeplot(data=df, x=&#x27;fixed acidity&#x27;, y=&#x27;alcohol&#x27;, color=&#x27;blue&#x27;)
+plt.show()
+
+sns.jointplot(data=df, x=&#x27;fixed acidity&#x27;, y=&#x27;alcohol&#x27;, kind=&#x27;reg&#x27;)          # scatter + regression + histograms
+plt.show()
+
+plt.figure(figsize=(4, 4))                                                  # contours by group
+sns.kdeplot(data=df, y=&#x27;alcohol&#x27;, x=&#x27;sulphates&#x27;, hue=&#x27;quality&#x27;,
+            palette=&#x27;RdPu&#x27;, bw_adjust=1, levels=5)
+plt.show()</code></pre></div><p><b>Stacking technique:</b> call two plot functions before a single <code class="i">plt.show()</code> and they land on the same graph. <code class="i">bw_adjust</code> controls smoothness; <code class="i">levels</code> the number of contour rings.</p></div></section><section id="groups"><h2>6. Numeric variable across groups (multivariate)</h2><div class="item"><h3>Box plot, violin plot</h3><p class="use"><b>Use when:</b> comparing median, spread and outliers across groups (box) or the full shape (violin).</p><div class="code"><button class="copy" type="button">Copy</button><pre><code>sns.catplot(data=df, x=&#x27;gender&#x27;, y=&#x27;math_score&#x27;, kind=&#x27;box&#x27;,
+            hue=&#x27;gender&#x27;, palette={&#x27;female&#x27;:&#x27;hotpink&#x27;, &#x27;male&#x27;:&#x27;skyblue&#x27;})
+plt.show()
+
+sns.violinplot(data=df, x=&#x27;gender&#x27;, y=&#x27;math_score&#x27;, hue=&#x27;gender&#x27;,
+               palette={&#x27;female&#x27;:&#x27;hotpink&#x27;, &#x27;male&#x27;:&#x27;skyblue&#x27;})
+plt.show()</code></pre></div><p><b>Box plot anatomy:</b> box from Q1 to Q3, line at the median, whiskers, dots for outliers. Whiskers do <b>not</b> always reach the true min and max. The true min and max can be among the outliers.</p><div class="code"><button class="copy" type="button">Copy</button><pre><code>IQR         = Q3 - Q1
+Lower limit = Q1 - 1.5 * IQR
+Upper limit = Q3 + 1.5 * IQR      # points outside the limits are outliers</code></pre></div><p><code class="i">catplot</code> with <code class="i">kind=&#x27;box&#x27;</code> is used when x is categorical and y is numeric. Outliers matter in real data because they flag errors, rare events and unusual groups.</p></div><div class="item"><h3>Point plot (mean and interval)</h3><p class="use"><b>Use when:</b> comparing group averages.</p><div class="code"><button class="copy" type="button">Copy</button><pre><code># mean and 95% confidence interval
+plt.figure(figsize=(5, 3))
+sns.pointplot(data=df, x=&#x27;gender&#x27;, y=&#x27;math_score&#x27;, linestyle=&#x27;--&#x27;)
+plt.title(&#x27;Mean and 95% Confident Interval of Math Score by Gender&#x27;)
+plt.show()
+
+# full min to max range
+plt.figure(figsize=(5, 3))
+sns.pointplot(data=df, x=&quot;ethnicity&quot;, y=&quot;math_score&quot;, errorbar=(&quot;pi&quot;, 100),
+              capsize=.2, color=&quot;hotpink&quot;, linestyle=&quot;none&quot;, marker=&quot;D&quot;,
+              mfc=&#x27;blue&#x27;, mec=&#x27;skyblue&#x27;, markersize=10)
+plt.title(&#x27;Math Score Gap by Ethnicity&#x27;)
+plt.grid()
+plt.show()
+
+# by two variables (hue)
+plt.figure(figsize=(5, 3))
+sns.pointplot(data=df, x=&#x27;ethnicity&#x27;, y=&#x27;math_score&#x27;,
+              linestyle=&#x27;--&#x27;, hue=&#x27;gender&#x27;,
+              palette={&#x27;female&#x27;:&#x27;hotpink&#x27;, &#x27;male&#x27;:&#x27;skyblue&#x27;})
+plt.grid()
+plt.show()</code></pre></div><table><thead><tr><th>Parameter</th><th>Meaning</th></tr></thead><tbody><tr><td><code class="i">errorbar=(&quot;pi&quot;, 100)</code></td><td>Line spans the whole range: min to max (100% percentile interval)</td></tr><tr><td><code class="i">capsize=.2</code></td><td>Width of the caps at the ends of the line</td></tr><tr><td><code class="i">linestyle=&quot;none&quot;</code></td><td>No line joining the dots</td></tr><tr><td><code class="i">marker=&quot;D&quot;</code></td><td>Diamond dot</td></tr><tr><td><code class="i">mfc / mec</code></td><td>Dot fill / edge color</td></tr><tr><td><code class="i">hue</code></td><td>Separate points per group</td></tr></tbody></table><p>Default point plot: dot = group <b>mean</b>, vertical line = <b>95% confidence interval</b>.</p></div><div class="item"><h3>KDE by group</h3><p class="use"><b>Use when:</b> comparing distribution shapes between groups.</p><div class="code"><button class="copy" type="button">Copy</button><pre><code>plt.figure(figsize=(5, 3))
+sns.kdeplot(data=df, x=&#x27;math_score&#x27;, hue=&#x27;gender&#x27;, common_norm=False, fill=True,
+            palette={&#x27;female&#x27;:&#x27;hotpink&#x27;, &#x27;male&#x27;:&#x27;skyblue&#x27;}, lw=2)
+plt.title(&#x27;Distribution of Math Score by Gender&#x27;)
+plt.show()</code></pre></div><p><code class="i">common_norm=False</code> scales each group separately so unequal group sizes do not distort the comparison. Use it whenever you compare KDE curves by label.</p></div></section><section id="timeseries"><h2>7. Time series and trend line</h2><div class="item"><h3>Prepare dates</h3><div class="code"><button class="copy" type="button">Copy</button><pre><code>df = pd.read_csv(&#x27;annual_gold.csv&#x27;)
+df.dtypes                                              # Date is text (object)
+df[&#x27;Date&#x27;] = pd.to_datetime(df[&#x27;Date&#x27;])                # now a real date
+df[&#x27;Date_ordinal&#x27;] = df[&#x27;Date&#x27;].map(pd.Timestamp.toordinal)   # day number since 0001-01-01</code></pre></div><p>Example from class: 1986-12-01 is day 725341. Always convert dates first. <code class="i">np.polyfit</code> needs numbers, so the trend uses <code class="i">Date_ordinal</code>.</p></div><div class="item"><h3>One line, two lines</h3><div class="code"><button class="copy" type="button">Copy</button><pre><code>plt.figure(figsize=(14, 5))
+sns.lineplot(data=df, x=&#x27;Date&#x27;, y=&#x27;Gold&#x27;, marker=&#x27;X&#x27;, markersize=12,
+             linestyle=&#x27;--&#x27;, color=&#x27;orange&#x27;)
+plt.grid(axis=&#x27;y&#x27;)
+plt.gcf().autofmt_xdate()
+plt.show()
+
+# gold and platinum together (one graph)
+plt.figure(figsize=(14, 5))
+sns.lineplot(data=df, x=&#x27;Date&#x27;, y=&#x27;Platinum&#x27;, marker=&#x27;X&#x27;, markersize=12,
+             linestyle=&#x27;--&#x27;, color=&#x27;gray&#x27;)
+sns.lineplot(data=df, x=&#x27;Date&#x27;, y=&#x27;Gold&#x27;, marker=&#x27;p&#x27;, markersize=10,
+             linestyle=&#x27;--&#x27;, color=&#x27;orange&#x27;)
+plt.grid(axis=&#x27;y&#x27;)
+plt.gcf().autofmt_xdate()
+plt.show()</code></pre></div></div><div class="item"><h3>Trend line (degree-2 fit)</h3><p class="use"><b>Use when:</b> showing the overall direction of a series.</p><div class="code"><button class="copy" type="button">Copy</button><pre><code>z = np.polyfit(df[&#x27;Date_ordinal&#x27;], df[&#x27;Gold&#x27;], 2)   # fit a curve of degree 2
+p = np.poly1d(z)                                    # turn it into a function
+
+plt.figure(figsize=(12, 5))
+sns.lineplot(data=df, x=&#x27;Date&#x27;, y=&#x27;Gold&#x27;, marker=&#x27;X&#x27;, color=&#x27;goldenrod&#x27;,
+             markersize=12, label=&#x27;price&#x27;, lw=2)
+plt.plot(df[&#x27;Date&#x27;], p(df[&#x27;Date_ordinal&#x27;]), color=&#x27;teal&#x27;, lw=4,
+         label=&#x27;trend&#x27;, alpha=0.7)
+plt.grid(axis=&#x27;y&#x27;, lw=0.5)
+plt.legend()
+plt.gcf().autofmt_xdate()
+plt.show()</code></pre></div><p><code class="i">np.polyfit(x, y, 2)</code> finds the best degree-2 curve; <code class="i">np.poly1d(z)</code> makes it callable; <code class="i">p(x)</code> gives the trend values.</p></div></section><section id="models"><h2>8. Analytical models</h2><div class="item"><h3>Rule and the five patterns</h3><p>Every line you plot over <code class="i">t</code> needs y-values from the same <code class="i">t</code> (same number of points), even a constant line: <code class="i">3000 + 0*t</code>.</p><table><thead><tr><th>Pattern</th><th>Model</th><th>Why</th></tr></thead><tbody><tr><td>Savings that speed up</td><td><code class="i">2000 + 2*t**2</code></td><td>Starts at 2000, grows non-linearly</td></tr><tr><td>Seasonal demand</td><td><code class="i">a + b*np.sin(2*np.pi*doy/365 + c)</code></td><td>Repeats yearly; flat most of the year, peak in December</td></tr><tr><td>Shopping browsing</td><td>random walk with <code class="i">np.cumsum</code></td><td>A wandering path</td></tr><tr><td>Learning</td><td><code class="i">plt.step(..., where=&#x27;post&#x27;)</code></td><td>Plateaus then rapid jumps</td></tr><tr><td>Rich vs poor</td><td>power law (<code class="i">lomax_pdf</code>)</td><td>A few hold most of the wealth</td></tr></tbody></table></div><div class="item"><h3>Savings (non-linear)</h3><div class="code"><button class="copy" type="button">Copy</button><pre><code>t = np.linspace(1, 12, 20)
+y = 2000 + 2*t**2
+plt.figure(figsize=(5, 3))
+plt.plot(t, y, color=&#x27;blue&#x27;, lw=2)
+plt.show()</code></pre></div></div><div class="item"><h3>Seasonal demand (sine)</h3><div class="code"><button class="copy" type="button">Copy</button><pre><code>def xmax_demand(dates, a=1, b=1, c=np.pi*(3/4)):
+    doy = dates.dayofyear
+    demand = a + b*np.sin(2*np.pi*doy/365 + c)
+    return demand
+
+dates = pd.date_range(&#x27;2026-01-01&#x27;, &#x27;2026-12-31&#x27;, freq=&#x27;D&#x27;)
+demand = xmax_demand(dates)
+
+plt.figure(figsize=(8, 3))
+plt.plot(dates, demand, color=&#x27;green&#x27;, linewidth=2)
+plt.xticks(pd.date_range(dates.min(), dates.max(), freq=&#x27;MS&#x27;), rotation=45)
+plt.axhline(y=0, color=&#x27;red&#x27;, linestyle=&#x27;--&#x27;)
+plt.axhline(y=2, color=&#x27;red&#x27;, linestyle=&#x27;--&#x27;)
+plt.show()</code></pre></div><p><code class="i">dayofyear</code> gives 1 to 365. <code class="i">freq=&#x27;D&#x27;</code> daily, <code class="i">freq=&#x27;MS&#x27;</code> month start. a = baseline, b = size of the swing, c = shifts when the peak happens. <code class="i">plt.axhline</code> draws a horizontal reference line.</p></div><div class="item"><h3>Random walk</h3><div class="code"><button class="copy" type="button">Copy</button><pre><code>n_steps = 200
+x_steps = np.random.normal(size=n_steps)
+y_steps = np.random.normal(size=n_steps)
+x_traj = np.cumsum(x_steps)
+y_traj = np.cumsum(y_steps)
+
+plt.figure(figsize=(4, 4))
+plt.plot(x_traj, y_traj, color=&#x27;hotpink&#x27;, linewidth=3)
+plt.grid()
+plt.show()</code></pre></div><p><code class="i">np.random.normal</code> draws random steps; <code class="i">np.cumsum</code> adds them up into a path.</p></div><div class="item"><h3>Step function (knowledge)</h3><div class="code"><button class="copy" type="button">Copy</button><pre><code>widsom_level = np.array([0, 1, 1, 1, 2, 2, 3, 4, 4, 5])
+weeks = np.arange(len(widsom_level))
+plt.figure(figsize=(6, 3))
+plt.step(weeks, widsom_level, where=&#x27;post&#x27;, color=&#x27;blue&#x27;, linewidth=3)
+plt.show()</code></pre></div></div><div class="item"><h3>Power law (rich and poor)</h3><div class="code"><button class="copy" type="button">Copy</button><pre><code>def lomax_pdf(r, alpha):
+    return alpha * (1 + r) ** (-(alpha + 1))
+
+r = np.linspace(1, 10, 100)
+alpha = 1.5
+prob = lomax_pdf(r, alpha)
+
+plt.figure(figsize=(6, 3))
+plt.plot(r, prob)
+plt.axvline(6, color=&#x27;grey&#x27;, lw=1.2, ls=&#x27;--&#x27;)
+plt.fill_between(r, prob, where=(r&gt;=1) &amp; (r&lt;=6), color=&#x27;gray&#x27;, alpha=0.4)
+plt.fill_between(r, prob, where=(r&gt;=6) &amp; (r&lt;=10), color=&#x27;gold&#x27;, alpha=0.6)
+plt.show()</code></pre></div><p><code class="i">fill_between(r, prob, where=...)</code> shades the area under the curve for the chosen range.</p></div><div class="item"><h3>Supply and demand (LA housing)</h3><div class="code"><button class="copy" type="button">Copy</button><pre><code>t = np.linspace(0, 3, 50)
+s = np.sin(t)                    # supply
+d = np.exp(t)*0.1                # demand
+
+plt.figure(figsize=(6, 3))
+plt.plot(t, s, label=&#x27;supply&#x27;, color=&#x27;green&#x27;, lw=2)
+plt.plot(t, d, label=&#x27;demand&#x27;, color=&#x27;red&#x27;, lw=2)
+plt.axvline(x=2.13, color=&#x27;grey&#x27;, linestyle=&#x27;--&#x27;)
+plt.axvline(x=0.1, color=&#x27;grey&#x27;, linestyle=&#x27;--&#x27;)
+plt.legend()
+plt.show()
+
+# constant inventory, still a function of t, as its own graph
+i_t = 3000 + 0*t
+plt.figure(figsize=(5, 3))
+plt.plot(t, i_t, label=&#x27;housing inventory&#x27;, color=&#x27;blue&#x27;, lw=3)
+plt.legend()
+plt.show()</code></pre></div><p>Equilibrium is where supply equals demand (the lines cross, near t = 0.1 and t = 2.13 in class). After 2.13, demand is above supply, which means a housing shortage.</p></div></section><section id="interactive"><h2>9. Interactive graphs (sliders)</h2><div class="item"><h3>Simple slider</h3><div class="code"><button class="copy" type="button">Copy</button><pre><code>def func(x):
+    outcome = 2*x + 4
+    print(&quot;result:&quot;, outcome)
+
+slider = widgets.IntSlider(value=10, min=0, max=20, step=1, description=&#x27;x&#x27;)
+out = widgets.interactive_output(func, {&#x27;x&#x27;: slider})
+ui = widgets.VBox([slider])
+display(ui, out)</code></pre></div><p>Example: revenue = 2 x units + 4 (4 is the fixed income). Moving the slider changes x and the printed result.</p></div><div class="item"><h3>Linear and non-linear with two sliders</h3><div class="code"><button class="copy" type="button">Copy</button><pre><code>def linear_func(slope, intercept):
+    x = np.linspace(-10, 10, num=1000)
+    plt.ylim(-10, 10)
+    plt.axvline(color=&#x27;black&#x27;)
+    plt.axhline(color=&#x27;black&#x27;)
+    plt.plot(x, slope*x + intercept, lw=5, color=&#x27;red&#x27;)
+    plt.grid()
+    plt.show()
+
+interactive_plot = interactive(linear_func, slope=(-5.0, 5.0), intercept=(-5.0, 5.0))
+interactive_plot
+
+def nonlinear_func(slope, intercept):
+    x = np.linspace(-10, 10, num=100)
+    plt.ylim(-10, 10)
+    plt.axvline(color=&#x27;black&#x27;)
+    plt.axhline(color=&#x27;black&#x27;)
+    plt.plot(x, x**2 + slope*x + intercept, lw=5, color=&#x27;blue&#x27;)
+    plt.grid()
+    plt.show()
+
+interactive_plot = interactive(nonlinear_func, slope=(-5.0, 5.0), intercept=(-5.0, 5.0))
+interactive_plot</code></pre></div><p><code class="i">interactive(func, a=(low, high))</code> makes a slider per argument. <code class="i">plt.ylim</code> fixes the y range so the picture does not jump.</p></div><div class="item"><h3>Normal distribution probability</h3><div class="code"><button class="copy" type="button">Copy</button><pre><code>x_all = np.linspace(-4, 4, 200)
+y_all = norm.pdf(x_all)
+
+def func_area(x=0):
+    plt.figure(figsize=(7, 3))
+    plt.plot(x_all, y_all, linewidth=2)
+    x_fill = np.linspace(-4, x, 200)
+    y_fill = norm.pdf(x_fill)
+    plt.fill_between(x_fill, y_fill, 0, alpha=0.35)
+    plt.axvline(x, linestyle=&quot;--&quot;, linewidth=2, color=&#x27;red&#x27;)
+    area = norm.cdf(x)
+    plt.xlim(-4, 4)
+    plt.title(f&quot;P(Z ≤ {x:.2f}) = {area:.4f}&quot;)
+    plt.show()
+
+interact(func_area, x=(-4, 4, 0.01));</code></pre></div><p><code class="i">norm.pdf</code> = height of the bell curve. <code class="i">norm.cdf</code> = area to the left of x = probability. <code class="i">interact(func, x=(min, max, step))</code> adds a slider.</p></div></section><section id="threed"><h2>10. 3D visualization</h2><div class="item"><h3>Surface from a formula</h3><p class="use"><b>Use when:</b> drawing a function of two variables.</p><div class="code"><button class="copy" type="button">Copy</button><pre><code>x_d = np.linspace(-1, 5, 10)
+y_d = np.linspace(-1, 5, 10)
+X, Y = np.meshgrid(x_d, y_d)          # grid of all x, y pairs
+Z = 2*X + Y + 5                        # third dimension
+
+fig = plt.figure(figsize=(8, 6))
+ax = fig.add_subplot(projection=&#x27;3d&#x27;)
+ax.plot_surface(X, Y, Z, color=&#x27;orchid&#x27;, alpha=0.8)
+plt.show()
+
+# other class formulas (x, y = np.linspace(1, 10, 100))
+Z = np.log(X**2 + Y**2)                # use cmap=&#x27;cool&#x27;
+H = np.sin(np.sqrt(X**2 + Y**2))       # use cmap=&#x27;gnuplot&#x27;
+ax.plot_surface(X, Y, H, cmap=&#x27;gnuplot&#x27;)</code></pre></div><p>Steps: 1) <code class="i">linspace</code> for x and y, 2) <code class="i">meshgrid</code>, 3) compute Z (or H), 4) <code class="i">fig.add_subplot(projection=&#x27;3d&#x27;)</code>, 5) <code class="i">ax.plot_surface</code>, 6) <code class="i">plt.show()</code>. <code class="i">cmap</code> colors by height.</p></div><div class="item"><h3>3D scatter from data</h3><div class="code"><button class="copy" type="button">Copy</button><pre><code>fig = plt.figure(figsize=(5, 5))
+ax = fig.add_subplot(projection=&#x27;3d&#x27;)
+ax.scatter(df[&#x27;age&#x27;], df[&#x27;ejection_fraction&#x27;], df[&#x27;serum_sodium&#x27;],
+           c=df[&#x27;sex&#x27;].map({0: &#x27;deeppink&#x27;, 1: &#x27;blue&#x27;}))
+plt.show()
+
+# interactive 3D (plotly): relabel first, then plot
+df[&#x27;sex&#x27;] = df[&#x27;sex&#x27;].map({0: &#x27;Female&#x27;, 1: &#x27;Male&#x27;})
+fig = px.scatter_3d(df, x=&#x27;age&#x27;, y=&#x27;ejection_fraction&#x27;, z=&#x27;serum_sodium&#x27;, color=&#x27;sex&#x27;,
+                    color_discrete_map={&#x27;Female&#x27;: &#x27;deeppink&#x27;, &#x27;Male&#x27;: &#x27;blue&#x27;})
+fig.update_traces(marker=dict(size=6, opacity=0.8))
+fig.update_layout(width=650, height=650)
+fig.show()</code></pre></div><p>Plotly version can be rotated and hovered. Class data: heart failure CSV.</p></div></section><section id="geo"><h2>11. Geo-spatial maps</h2><div class="item"><h3>Points on a map</h3><div class="code"><button class="copy" type="button">Copy</button><pre><code>pip install geopandas
+pip install geodatasets
+from geodatasets import get_path
+
+df1 = pd.read_csv(&#x27;geo_data.csv&#x27;)                   # City, Country, Latitude, Longitude
+gdf = geopandas.GeoDataFrame(df1, geometry=geopandas.points_from_xy(df1.Longitude, df1.Latitude))
+world = geopandas.read_file(get_path(&quot;naturalearth.land&quot;))
+
+ax = world.clip([-90, -55, -25, 15]).plot(color=&quot;w&quot;, edgecolor=&quot;blue&quot;)   # South America box
+gdf.plot(ax=ax, color=&quot;red&quot;, marker=&#x27;D&#x27;, markersize=20)
+for _, row in gdf.iterrows():
+    ax.annotate(row[&#x27;City&#x27;], (row.geometry.x, row.geometry.y), fontsize=9,
+                xytext=(2, 2), textcoords=&quot;offset points&quot;)
+plt.show()</code></pre></div><ul><li><code class="i">points_from_xy(longitude, latitude)</code>: x is longitude, y is latitude. (The class PDF cut off the second argument; <code class="i">df1.Latitude</code> is the filled-in value.)</li><li><code class="i">world.clip([minx, miny, maxx, maxy])</code> crops the world map to a box.</li><li><code class="i">gdf.plot(ax=ax, ...)</code> draws the points on top of the same map (<code class="i">ax=ax</code>).</li><li><code class="i">ax.annotate</code> writes each city name next to its point.</li><li><code class="i">iterrows()</code> loops over the rows.</li></ul></div><div class="item"><h3>US states from a shapefile</h3><div class="code"><button class="copy" type="button">Copy</button><pre><code>df2 = pd.read_csv(&#x27;chipotle_stores.csv&#x27;)          # state, location, address, latitude, longitude
+gdf = geopandas.GeoDataFrame(df2, geometry=geopandas.points_from_xy(df2.longitude, df2.latitude))
+states = geopandas.read_file(&#x27;usa-states-census-2014.shp&#x27;)
+
+fig, ax = plt.subplots(figsize=(14, 8))
+states.plot(ax=ax, edgecolor=&#x27;k&#x27;, alpha=1, linewidth=1, cmap=&#x27;Greens&#x27;)
+ax.set_facecolor(&#x27;#a2d2ff&#x27;)
+gdf.plot(ax=ax, color=&#x27;red&#x27;, markersize=10, marker=&#x27;P&#x27;)
+plt.show()</code></pre></div><p>Optional fix for a shapefile error seen in class: <code class="i">gdal.SetConfigOption(&#x27;SHAPE_RESTORE_SHX&#x27;, &#x27;YES&#x27;)</code> (with <code class="i">from osgeo import gdal</code>).</p></div></section><section id="network"><h2>12. Network visualization</h2><div class="item"><h3>Concepts</h3><ul><li><b>Node</b>: an entity (person, computer, organization).</li><li><b>Edge (link)</b>: a relationship between nodes. Directed = one-way arrow, undirected = two-way.</li><li><b>Degree</b>: number of connections a node has. Directed networks have in-degree and out-degree.</li><li>Business use: find influencers and key connections, detect groups with similar behavior for targeting.</li></ul></div><div class="item"><h3>Build and draw a small directed network</h3><div class="code"><button class="copy" type="button">Copy</button><pre><code>G = nx.DiGraph()
+G.add_node(&#x27;a&#x27;)
+G.add_node(&#x27;b&#x27;)
+G.add_node(6)
+G.add_edge(&#x27;a&#x27;, &#x27;b&#x27;)        # a -&gt; b
+G.add_edge(&#x27;a&#x27;, 6)          # a -&gt; 6
+G.add_edge(&#x27;b&#x27;, 6)          # b -&gt; 6
+
+plt.figure(figsize=(4, 4))
+pos_G = nx.spring_layout(G)
+nx.draw_networkx_nodes(G, pos_G, node_color=&#x27;gold&#x27;, node_size=500)
+nx.draw_networkx_edges(G, pos_G, edge_color=&#x27;green&#x27;,
+                       connectionstyle=&#x27;arc3, rad=0.2&#x27;, min_target_margin=10)
+nx.draw_networkx_labels(G, pos_G)
+plt.show()</code></pre></div><p><code class="i">spring_layout</code> decides node positions. <code class="i">draw_networkx_nodes/edges/labels</code> are three separate calls that together make one graph. <code class="i">connectionstyle=&#x27;arc3, rad=0.2&#x27;</code> curves the arrows. <code class="i">min_target_margin</code> keeps the arrowhead off the node. The class PDF cut off the exact <code class="i">rad</code> value for one example; 0.2 is the filled-in value.</p></div><div class="item"><h3>Class exercise: computation center</h3><div class="code"><button class="copy" type="button">Copy</button><pre><code>G = nx.DiGraph()
+G.add_node(&#x27;Nove&#x27;)
+G.add_node(&#x27;CP&#x27;)
+G.add_node(&#x27;D6&#x27;)
+G.add_node(&#x27;PR_001&#x27;)
+G.add_edge(&#x27;Nove&#x27;, &#x27;CP&#x27;)
+G.add_edge(&#x27;Nove&#x27;, &#x27;D6&#x27;)
+G.add_edge(&#x27;D6&#x27;, &#x27;PR_001&#x27;)
+G.add_edge(&#x27;PR_001&#x27;, &#x27;CP&#x27;)
+G.add_edge(&#x27;PR_001&#x27;, &#x27;Nove&#x27;)
+plt.figure(figsize=(4, 4))
+pos = nx.spring_layout(G)
+nx.draw_networkx_nodes(G, pos, node_color=&#x27;gold&#x27;, node_size=500)
+nx.draw_networkx_edges(G, pos, edge_color=&#x27;green&#x27;, connectionstyle=&#x27;arc3, rad=0.2&#x27;,
+                       min_target_margin=10)
+nx.draw_networkx_labels(G, pos)
+plt.show()</code></pre></div><p>Task: hub Nove passes information to computer CP and data center D6; D6 passes data to processor PR_001; PR_001 sends results back to CP and Nove. Nodes = roles, edges = supervision or dependency.</p></div><div class="item"><h3>Network from a CSV with sizes and widths</h3><div class="code"><button class="copy" type="button">Copy</button><pre><code>df = pd.read_csv(&#x27;social_media.csv&#x27;)                 # user_name, follows_who, days
+
+G2 = nx.from_pandas_edgelist(df, source=&#x27;user_name&#x27;, target=&#x27;follows_who&#x27;, edge_attr=&#x27;days&#x27;)
+nodelist = G2.nodes()
+weights = list(nx.get_edge_attributes(G2, &#x27;days&#x27;).values())
+weights = [i/50 for i in weights]                     # scale edge widths
+degree_info = nx.degree(G2)
+degree_values = [number*300 for user, number in degree_info]   # scale node sizes
+
+plt.figure(figsize=(5, 5))
+pos_G2 = nx.spring_layout(G2)
+nx.draw_networkx_nodes(G2, pos_G2, cmap=&#x27;bwr&#x27;, node_size=degree_values,
+                       node_color=degree_values, alpha=0.5)
+nx.draw_networkx_edges(G2, pos_G2, width=weights, edge_color=&#x27;grey&#x27;,
+                       connectionstyle=&#x27;arc3, rad=0.2&#x27;, min_target_margin=20,
+                       min_source_margin=20, arrows=True)
+nx.draw_networkx_labels(G2, pos_G2)
+plt.show()</code></pre></div><table><thead><tr><th>Piece</th><th>Meaning</th></tr></thead><tbody><tr><td><code class="i">from_pandas_edgelist</code></td><td>Builds the network from a table: source column to target column, with an edge attribute</td></tr><tr><td><code class="i">edge_attr=&#x27;days&#x27;</code></td><td>Stores the days value on each edge</td></tr><tr><td><code class="i">nx.degree(G2)</code></td><td>Degree of each node (class: Anne 2, Carmen 4, Betty 1, Dillan 3, Jessica 1, Keth 1)</td></tr><tr><td><code class="i">number*300</code></td><td>Scales degree up so node sizes are visible</td></tr><tr><td><code class="i">i/50</code></td><td>Scales days down so edge widths are reasonable</td></tr><tr><td><code class="i">cmap=&#x27;bwr&#x27;</code></td><td>Blue-white-red node coloring by degree</td></tr></tbody></table><p>Carmen has degree 4, the most connections, so Carmen is the biggest node. Note: as written in class, <code class="i">from_pandas_edgelist</code> builds a plain undirected graph, replacing the earlier <code class="i">nx.DiGraph()</code> line.</p></div></section><section id="radar"><h2>13. Radar chart</h2><div class="item"><h3>Single entity</h3><p class="use"><b>Use when:</b> comparing several scores on one scale: strengths and weaknesses of products, teams, competitors.</p><div class="code"><button class="copy" type="button">Copy</button><pre><code>attributes = [&#x27;Power&#x27;,&#x27;Speed&#x27;,&#x27;Strength&#x27;,&#x27;Intelligence&#x27;,&#x27;Flight&#x27;]
+values = [90, 80, 75, 90, 75]
+values = values + [values[0]]                              # repeat first value to close shape
+
+angles = np.linspace(0, 2*np.pi, 5, endpoint=False).tolist()
+angles = angles + [0]                                      # close the angles too
+
+plt.figure(figsize=[5, 5])
+ax = plt.subplot(polar=True)
+plt.xticks(angles[:-1], attributes)
+ax.set_rlabel_position(0)
+plt.yticks([20, 40, 60, 80, 100], color=&#x27;blue&#x27;, alpha=0.3)
+plt.ylim(0, 100)
+ax.plot(angles, values, color=&#x27;hotpink&#x27;, linewidth=2)
+ax.fill(angles, values, facecolor=&#x27;pink&#x27;, alpha=0.5)
+plt.show()</code></pre></div><p>The <code class="i">5</code> in <code class="i">np.linspace(0, 2*np.pi, 5, endpoint=False)</code> is the number of attributes. <code class="i">endpoint=False</code> stops the last angle from landing on the first. <code class="i">plt.subplot(polar=True)</code> makes the circular axes. <code class="i">ax.plot</code> draws the outline, <code class="i">ax.fill</code> shades inside.</p></div><div class="item"><h3>Two entities on one chart (one graph)</h3><div class="code"><button class="copy" type="button">Copy</button><pre><code>values_flash = [95, 100, 90, 90, 65]
+values_flash = values_flash + [95]
+
+plt.figure(figsize=(5, 5))
+ax = plt.subplot(polar=True)
+plt.xticks(angles[:-1], attributes)
+ax.set_rlabel_position(30)
+plt.yticks([20, 40, 60, 80, 100], color=&#x27;blue&#x27;, alpha=0.8)
+plt.ylim(0, 100)
+ax.plot(angles, values, label=&#x27;wonder woman&#x27;, color=&#x27;hotpink&#x27;, linewidth=3)
+ax.fill(angles, values, facecolor=&#x27;#cdb4db&#x27;, alpha=0.5)
+ax.plot(angles, values_flash, color=&#x27;steelblue&#x27;, linewidth=2, label=&#x27;The Flash&#x27;)
+ax.fill(angles, values_flash, facecolor=&#x27;skyblue&#x27;, alpha=0.3)
+plt.legend(loc=&#x27;upper left&#x27;)
+plt.show()</code></pre></div></div><div class="item"><h3>Class exercise: smartphone (battery 7, camera 9, price 6, scale 1 to 10)</h3><div class="code"><button class="copy" type="button">Copy</button><pre><code>attributes = [&#x27;Battery&#x27;, &#x27;Camera&#x27;, &#x27;Price&#x27;]
+values = [7, 9, 6]
+values = values + [values[0]]
+angles = np.linspace(0, 2*np.pi, 3, endpoint=False).tolist()
+angles = angles + [0]
+plt.figure(figsize=[5, 5])
+ax = plt.subplot(polar=True)
+plt.xticks(angles[:-1], attributes)
+plt.yticks([2, 4, 6, 8, 10])
+plt.ylim(0, 10)
+ax.plot(angles, values, color=&#x27;hotpink&#x27;, linewidth=2)
+ax.fill(angles, values, facecolor=&#x27;pink&#x27;, alpha=0.5)
+plt.show()</code></pre></div><p>Three attributes = 3 angles, and the scale limit is 10. No unused variables (redundant code loses points).</p></div></section><section id="wordcloud"><h2>14. Text visualization: word cloud</h2><div class="item"><h3>Concepts</h3><ul><li>Word size shows how often a word appears (its importance in the text).</li><li><b>Stop words</b> ("and", "the", "is", "in") carry little meaning, so remove them to see the real themes. <code class="i">STOPWORDS</code> is the built-in list.</li><li>A <b>mask</b> (image) gives the cloud a shape.</li><li>Business use: customer reviews, social media posts, competitor and industry reports, brand perception.</li></ul></div><div class="item"><h3>From a text string</h3><div class="code"><button class="copy" type="button">Copy</button><pre><code>text_01 = &quot;&quot;&quot;
+Python is a high-level, interpreted programming language.
+Python is widely used in data science, machine learning, and artificial intelligence.
+&quot;&quot;&quot;
+print(STOPWORDS)
+plt.figure(figsize=(8, 4))
+wcd_01 = WordCloud(colormap=&#x27;PRGn&#x27;, background_color=&#x27;white&#x27;,
+                   stopwords=STOPWORDS).generate(text_01)
+plt.imshow(wcd_01)
+plt.axis(&#x27;off&#x27;)
+plt.show()</code></pre></div></div><div class="item"><h3>From a text file</h3><div class="code"><button class="copy" type="button">Copy</button><pre><code>poem = open(&#x27;she_walks_in_beauty.txt&#x27;, &#x27;r&#x27;).read()
+print(poem)
+
+plt.figure(figsize=(8, 4))
+wcd_02 = WordCloud(colormap=&#x27;cool&#x27;, background_color=&#x27;white&#x27;,
+                   stopwords=STOPWORDS).generate(poem)
+plt.imshow(wcd_02)
+plt.axis(&#x27;off&#x27;)
+plt.show()</code></pre></div></div><div class="item"><h3>With a shape mask</h3><div class="code"><button class="copy" type="button">Copy</button><pre><code>pic_heart = np.array(PIL.Image.open(&#x27;heart.png&#x27;))
+
+plt.figure(figsize=(6, 6))
+wcd_03 = WordCloud(colormap=&#x27;cool&#x27;, background_color=&#x27;white&#x27;,
+                   stopwords=STOPWORDS, mask=pic_heart,
+                   contour_width=6, contour_color=&#x27;steelblue&#x27;).generate(poem)
+plt.imshow(wcd_03)
+plt.axis(&#x27;off&#x27;)
+plt.show()</code></pre></div><table><thead><tr><th>Piece</th><th>Meaning</th></tr></thead><tbody><tr><td><code class="i">colormap</code></td><td>Color theme of the words (PRGn, cool, GnBu)</td></tr><tr><td><code class="i">background_color</code></td><td>Canvas color</td></tr><tr><td><code class="i">stopwords=STOPWORDS</code></td><td>Remove common words</td></tr><tr><td><code class="i">mask</code></td><td>Image array whose shape the words fill</td></tr><tr><td><code class="i">contour_width / contour_color</code></td><td>Outline of the mask shape</td></tr><tr><td><code class="i">.generate(text)</code></td><td>Builds the cloud from a string</td></tr><tr><td><code class="i">plt.imshow</code></td><td>Displays the cloud as an image</td></tr><tr><td><code class="i">plt.axis(&#x27;off&#x27;)</code></td><td>Hides axes</td></tr></tbody></table><p>Class task: make a word cloud from <code class="i">python_intro.txt</code> with <code class="i">python.png</code> as the mask (same code with <code class="i">colormap='GnBu'</code>).</p></div></section><section id="bubble"><h2>15. Bubble chart (plotly)</h2><div class="item"><h3>Brand mentions vs sentiment</h3><p class="use"><b>Use when:</b> a scatter plot that also needs size and color for extra variables.</p><div class="code"><button class="copy" type="button">Copy</button><pre><code>df = pd.read_csv(&#x27;brand_sentiment.csv&#x27;)       # Category, Brand, Mentions, Sentiment, Num_Purchase
+df[&#x27;Category&#x27;].value_counts()
+df_selected = df.loc[df[&#x27;Category&#x27;].isin([&#x27;Fashion&#x27;])]    # keep only Fashion brands
+
+fig = px.scatter(df_selected, x=&#x27;Mentions&#x27;, y=&#x27;Sentiment&#x27;, size=&#x27;Num_Purchase&#x27;,
+                 hover_name=&#x27;Brand&#x27;, text=&#x27;Brand&#x27;,
+                 color=&#x27;Sentiment&#x27;, color_continuous_scale=[&#x27;#4cc9f0&#x27;, &#x27;white&#x27;, &#x27;#c77dff&#x27;],
+                 range_color=[-1, 1],
+                 hover_data={&quot;Mentions&quot;: True, &quot;Sentiment&quot;: &#x27;:.2f&#x27;, &quot;Num_Purchase&quot;: True},
+                 size_max=55, title=&#x27;Brand Mentions vs. Sentiment&#x27;)
+fig.add_hline(y=0, line_dash=&#x27;dash&#x27;, annotation_text=&#x27;threshold&#x27;, annotation_position=&#x27;top left&#x27;)
+fig.update_layout(height=600, width=850, plot_bgcolor=&#x27;#e9ecef&#x27;, paper_bgcolor=&#x27;white&#x27;, title_x=0.5)
+fig.show()</code></pre></div><table><thead><tr><th>Piece</th><th>Meaning</th></tr></thead><tbody><tr><td><code class="i">x, y</code></td><td>Mentions and Sentiment</td></tr><tr><td><code class="i">size</code></td><td>Bubble size = Num_Purchase (third variable)</td></tr><tr><td><code class="i">color</code></td><td>Bubble color = Sentiment (fourth encoding)</td></tr><tr><td><code class="i">hover_name / hover_data</code></td><td>What shows on hover</td></tr><tr><td><code class="i">text</code></td><td>Label printed on each bubble</td></tr><tr><td><code class="i">range_color</code></td><td>Color scale limits</td></tr><tr><td><code class="i">size_max</code></td><td>Largest bubble size</td></tr><tr><td><code class="i">add_hline</code></td><td>Dashed horizontal threshold line at y = 0</td></tr><tr><td><code class="i">update_layout</code></td><td>Height, width, background, title position</td></tr></tbody></table><p>This code was read from a small screenshot in the class PDF. Check small details against your notebook.</p></div></section><section id="survival"><h2>16. Survival analysis for business</h2><div class="item"><h3>The business question</h3><ul><li>Research question: how long does a trendy product stay popular before its popularity declines substantially?</li><li>Data: 60 viral products (Stanley cups, Pokemon cards, Labubus). Each row is one product observed from the start of its trend.</li><li><code class="i">influencer_push</code>: 1 = influencer promotion, 0 = none. <code class="i">discount_support</code>: 1 = discounts used.</li><li><code class="i">months_observed</code>: months from start until decline or end of observation.</li><li><code class="i">outcome</code>: 1 = popularity fell below 40% of launch level; 0 = it had not (still popular when observation ended, called <b>censored</b>).</li><li>Answers: what share of products is still popular after 6, 12 or 18 months, and the popularity lifespan.</li><li>Value: plan inventory, marketing, pricing, launches. Compare products with and without influencer promotion.</li></ul></div><div class="item"><h3>Weibull formula</h3><div class="code"><button class="copy" type="button">Copy</button><pre><code>S(t) = exp[ -( t / lambda )^k ]</code></pre></div><ul><li>S(t) is the survival probability at time t. It never increases.</li><li><b>Large lambda</b>: longer survival, slower decline.</li><li><b>k &lt; 1</b>: survival drops fast at first, then flattens.</li><li><b>k = 1</b>: exponential (typical constant-rate decline).</li><li><b>k &gt; 1</b>: survival drops slowly at first, then sharply.</li></ul><div class="code"><button class="copy" type="button">Copy</button><pre><code>t = np.linspace(0, 12, 100)
+s_t = np.exp(-(t/3)**0.5)                    # lambda = 3, k = 0.5
+plt.figure(figsize=(5, 3))
+plt.plot(t, s_t, label=&#x27;chance of survival&#x27;, color=&#x27;green&#x27;, lw=3)
+plt.grid()
+plt.legend()
+plt.show()</code></pre></div><p>Interpretation from class: as time progresses, the chance of survival gradually decreases.</p></div><div class="item"><h3>Fit and plot a group</h3><div class="code"><button class="copy" type="button">Copy</button><pre><code>df = pd.read_csv(&quot;trendy_products.csv&quot;)
+df[&#x27;category&#x27;].value_counts()                 # 20 products per category
+
+stanley = df[df[&quot;category&quot;] == &quot;Stanley&quot;]     # pick one product group
+
+wf_stl = WeibullFitter()
+wf_stl.fit(durations=stanley[&quot;months_observed&quot;], event_observed=stanley[&quot;outcome&quot;],
+           label=&quot;Stanley Cup&quot;)
+wf_stl.plot_survival_function(ci_show=True)
+plt.ylabel(&quot;Popularity&quot;)
+plt.xlabel(&#x27;time&#x27;)
+plt.show()</code></pre></div><table><thead><tr><th>Piece</th><th>Meaning</th></tr></thead><tbody><tr><td><code class="i">WeibullFitter()</code></td><td>The survival model object</td></tr><tr><td><code class="i">durations=</code></td><td>The time column (months_observed)</td></tr><tr><td><code class="i">event_observed=</code></td><td>The 0/1 column (outcome): 1 = event happened</td></tr><tr><td><code class="i">label=</code></td><td>Name shown in the legend</td></tr><tr><td><code class="i">plot_survival_function(ci_show=True)</code></td><td>Draws the curve and shades the confidence band</td></tr></tbody></table></div><div class="item"><h3>Compare two groups on one graph</h3><div class="code"><button class="copy" type="button">Copy</button><pre><code>labubus = df[df[&quot;category&quot;] == &quot;Labubus&quot;]
+wf_lbb = WeibullFitter()
+wf_lbb.fit(durations=labubus[&quot;months_observed&quot;], event_observed=labubus[&quot;outcome&quot;],
+           label=&quot;Labubus&quot;)
+
+wf_stl.plot_survival_function(ci_show=True)
+wf_lbb.plot_survival_function(ci_show=True, color=&#x27;red&#x27;)
+plt.ylabel(&quot;Popularity&quot;)
+plt.xlabel(&#x27;time&#x27;)
+plt.show()</code></pre></div><p>Fit each group separately, then plot both before one <code class="i">plt.show()</code>.</p></div></section><section id="project"><h2>17. Mushroom project (review of old charts)</h2><div class="item"><h3>Eight tasks the class did with mushroom.csv</h3><div class="code"><button class="copy" type="button">Copy</button><pre><code>df = pd.read_csv(&#x27;mushroom.csv&#x27;)   # class, cap-shape, cap-color, stem-height, stem-width, habitat, season
+
+# task 1: count by class
+plt.figure(figsize=(5, 3))
+sns.countplot(data=df, x=&#x27;class&#x27;, hue=&#x27;class&#x27;, palette={&#x27;p&#x27;:&#x27;red&#x27;, &#x27;e&#x27;:&#x27;green&#x27;})
+plt.show()
+
+# task 2: scatter of two numeric variables
+plt.figure(figsize=(5, 3))
+sns.scatterplot(data=df, x=&#x27;stem-height&#x27;, y=&#x27;stem-width&#x27;, color=&#x27;grey&#x27;)
+plt.show()
+
+# task 3: same scatter colored by class
+plt.figure(figsize=(5, 3))
+sns.scatterplot(data=df, x=&#x27;stem-height&#x27;, y=&#x27;stem-width&#x27;, hue=&#x27;class&#x27;,
+                palette={&#x27;p&#x27;:&#x27;red&#x27;, &#x27;e&#x27;:&#x27;green&#x27;})
+plt.show()
+
+# task 4: two KDEs stacked on one graph
+plt.figure(figsize=(5, 3))
+sns.kdeplot(data=df, x=&#x27;stem-height&#x27;, color=&#x27;blue&#x27;, lw=3, label=&#x27;stem height&#x27;)
+sns.kdeplot(data=df, x=&#x27;stem-width&#x27;, color=&#x27;deeppink&#x27;, lw=3, label=&#x27;stem width&#x27;)
+plt.legend()
+plt.show()
+
+# task 5: histogram with KDE
+plt.figure(figsize=(5, 3))
+sns.histplot(data=df, x=&#x27;stem-height&#x27;, kde=True, bins=20, fill=False, lw=3, color=&#x27;black&#x27;)
+plt.show()
+
+# task 6: KDE by season
+plt.figure(figsize=(5, 3))
+sns.kdeplot(data=df, x=&#x27;stem-height&#x27;, hue=&#x27;season&#x27;, common_norm=False, fill=True)
+plt.show()
+
+# task 7: point plot with full range per color
+plt.figure(figsize=(5, 3))
+sns.pointplot(data=df, x=&#x27;cap-color&#x27;, y=&#x27;stem-width&#x27;, errorbar=(&#x27;pi&#x27;, 100),
+              ls=&#x27;none&#x27;, capsize=0.2, hue=&#x27;cap-color&#x27;)
+plt.show()
+
+# task 8: point plot by two categories
+plt.figure(figsize=(5, 3))
+sns.pointplot(data=df, x=&#x27;cap-shape&#x27;, y=&#x27;stem-height&#x27;, hue=&#x27;class&#x27;)
+plt.show()</code></pre></div><p>Each task is one graph. Note that task 4 uses the stacking technique (two <code class="i">kdeplot</code> calls, one figure, one <code class="i">plt.show()</code>).</p></div></section><section id="concepts"><h2>18. Concepts and terms (glossary)</h2><div class="item"><h3>Lecture concepts</h3><table><thead><tr><th>Term</th><th>Plain-English meaning</th></tr></thead><tbody><tr><td>Data to visualize to insight</td><td>Rows of data become a graph, and the graph's pattern becomes a business decision</td></tr><tr><td>Display, Interpret, Decide</td><td>Choose the right graph, explain the pattern, translate it into action</td></tr><tr><td>Anscombe's quartet</td><td>Four datasets with almost identical statistics but very different graphs; proof you must visualize</td></tr><tr><td>Channels</td><td>How a graph encodes data: position, color, size, shape</td></tr><tr><td>Cholera map (1854 London)</td><td>A map of cases found the source of the outbreak; a map stopped cholera</td></tr><tr><td>Stroke Valley</td><td>A map showing a region with unusually high stroke mortality; diet may contribute</td></tr><tr><td>Logic, code, business insight</td><td>Every topic connects why the tool fits, how to code it, and what the business does with it</td></tr><tr><td>Colab notebook</td><td>Browser-based notebook: write Python, run cells, add text, share without installing</td></tr><tr><td>pandas, NumPy, Matplotlib, Seaborn</td><td>Data tables, numbers, base plotting, statistical charts</td></tr></tbody></table></div><div class="item"><h3>Data and chart terms</h3><table><thead><tr><th>Term</th><th>Plain-English meaning</th></tr></thead><tbody><tr><td>Categorical variable</td><td>Labels or groups (gender, product type)</td></tr><tr><td>Numeric variable</td><td>Numbers (math score, price)</td></tr><tr><td>Multivariate</td><td>Two or more variables compared together; use hue to split by group</td></tr><tr><td>hue</td><td>Colors the graph by a category so groups can be compared</td></tr><tr><td>palette</td><td>Colors for each hue group, often a dict like {'female':'hotpink'}</td></tr><tr><td>Histogram / bin</td><td>Bars counting values in each range / one such range</td></tr><tr><td>KDE</td><td>Kernel density estimate: smooth curve version of a histogram</td></tr><tr><td>common_norm=False</td><td>Scale each group's KDE on its own so group sizes do not distort shapes</td></tr><tr><td>Quartiles Q1, median, Q3</td><td>Values at 25%, 50%, 75% of sorted data</td></tr><tr><td>IQR</td><td>Q3 minus Q1, the width of the box</td></tr><tr><td>Outlier</td><td>A point beyond Q1 - 1.5 x IQR or Q3 + 1.5 x IQR</td></tr><tr><td>Whisker</td><td>Box-plot line to the last point inside the outlier limits (not always the true min or max)</td></tr><tr><td>Confidence interval</td><td>Range likely to contain the true mean; the line on a point plot (95%)</td></tr><tr><td>Correlation coefficient</td><td>-1 to 1 for linear relationship: near 1 strong positive, near -1 strong negative, near 0 weak; not causation</td></tr><tr><td>Heatmap</td><td>Color grid of values, used for correlations</td></tr><tr><td>Contour plot</td><td>2D KDE drawn as rings; denser rings = more data</td></tr><tr><td>Trend line</td><td>A fitted curve through time-series data (class used degree 2)</td></tr><tr><td>Ordinal date</td><td>A date turned into a day count so math works</td></tr></tbody></table></div><div class="item"><h3>Newer topic terms</h3><table><thead><tr><th>Term</th><th>Plain-English meaning</th></tr></thead><tbody><tr><td>Analytical model</td><td>A formula imitating a real behavior, then visualized</td></tr><tr><td>Random walk</td><td>Path made of cumulative random steps</td></tr><tr><td>Step function</td><td>Stays flat, then jumps (learning with plateaus)</td></tr><tr><td>Power law</td><td>A few items hold most of the total (rich vs poor)</td></tr><tr><td>Equilibrium</td><td>Supply equals demand</td></tr><tr><td>Slider / widget</td><td>A control that changes a parameter so the graph updates</td></tr><tr><td>meshgrid</td><td>Turns two lists into a grid of all x, y pairs for 3D</td></tr><tr><td>Latitude / longitude</td><td>North-south / east-west position; y / x on a map</td></tr><tr><td>GeoDataFrame</td><td>A table with a geometry column of map points</td></tr><tr><td>Network, node, edge</td><td>Entities joined by links</td></tr><tr><td>Degree</td><td>Number of edges on a node; in-degree and out-degree for directed networks</td></tr><tr><td>Radar chart</td><td>Several variables for one or more entities on the same scale</td></tr><tr><td>Word cloud / stop words / mask</td><td>Word size = frequency / common words removed / image shape</td></tr><tr><td>Bubble chart</td><td>Scatter with bubble size for a third variable and color for a fourth</td></tr><tr><td>Survival analysis</td><td>Estimates how long until an event (popularity below 40% of launch)</td></tr><tr><td>Censored observation</td><td>Event had not happened when observation ended (outcome = 0)</td></tr><tr><td>Weibull model, lambda, k</td><td>Survival curve with scale lambda and shape k</td></tr><tr><td>S(t)</td><td>Survival probability at time t; never increases</td></tr></tbody></table></div></section><section id="selftest"><h2>19. Rapid-fire self-test</h2><div class="item"><h3>Cover the answer, then reveal</h3><div class="qi"><p><b>1.</b> A column has 8 labels. Pie chart or count plot?</p><button class="rev" type="button">Reveal answer</button><div class="ans" hidden>Count plot. Pie is for 5 labels or fewer.</div></div><div class="qi"><p><b>2.</b> What does np.linspace(0, 10, 5) return?</p><button class="rev" type="button">Reveal answer</button><div class="ans" hidden>[0, 2.5, 5, 7.5, 10]. Five numbers, both ends included.</div></div><div class="qi"><p><b>3.</b> What does df.iloc[:, 0:11] select?</p><button class="rev" type="button">Reveal answer</button><div class="ans" hidden>All rows, columns 0 to 10. The end (11) is excluded.</div></div><div class="qi"><p><b>4.</b> Which chart compares math score by gender?</p><button class="rev" type="button">Reveal answer</button><div class="ans" hidden>Box plot (catplot kind=&quot;box&quot;), violin, point plot, or KDE with hue.</div></div><div class="qi"><p><b>5.</b> Where do box plot whiskers end?</p><button class="rev" type="button">Reveal answer</button><div class="ans" hidden>At the last point inside the outlier limits, not at the true min and max.</div></div><div class="qi"><p><b>6.</b> What are the outlier limits?</p><button class="rev" type="button">Reveal answer</button><div class="ans" hidden>Q1 - 1.5 x IQR and Q3 + 1.5 x IQR, where IQR = Q3 - Q1.</div></div><div class="qi"><p><b>7.</b> What does common_norm=False do?</p><button class="rev" type="button">Reveal answer</button><div class="ans" hidden>Scales each group&#x27;s KDE separately so group sizes do not distort the comparison.</div></div><div class="qi"><p><b>8.</b> What does a heatmap cell of 0.9 mean?</p><button class="rev" type="button">Reveal answer</button><div class="ans" hidden>Strong positive linear relationship. It does not prove causation.</div></div><div class="qi"><p><b>9.</b> Which two steps come before np.polyfit on dates?</p><button class="rev" type="button">Reveal answer</button><div class="ans" hidden>pd.to_datetime, then map(pd.Timestamp.toordinal).</div></div><div class="qi"><p><b>10.</b> What does errorbar=(&quot;pi&quot;, 100) show on a point plot?</p><button class="rev" type="button">Reveal answer</button><div class="ans" hidden>The full min-to-max range instead of the 95% confidence interval.</div></div><div class="qi"><p><b>11.</b> In the social media network, Carmen has degree 4. What does it mean?</p><button class="rev" type="button">Reveal answer</button><div class="ans" hidden>Carmen has 4 connections, the most, so Carmen is the biggest node.</div></div><div class="qi"><p><b>12.</b> Why remove stop words in a word cloud?</p><button class="rev" type="button">Reveal answer</button><div class="ans" hidden>They carry little meaning and would be the biggest words, hiding the themes.</div></div><div class="qi"><p><b>13.</b> Weibull k &lt; 1: what does the survival curve look like?</p><button class="rev" type="button">Reveal answer</button><div class="ans" hidden>Drops fast at first, then flattens.</div></div><div class="qi"><p><b>14.</b> In the survival data, what does outcome = 0 mean?</p><button class="rev" type="button">Reveal answer</button><div class="ans" hidden>Popularity had not fallen below 40% when observation ended (censored).</div></div><div class="qi"><p><b>15.</b> In the bubble chart, what sets bubble size?</p><button class="rev" type="button">Reveal answer</button><div class="ans" hidden>Num_Purchase (x = Mentions, y and color = Sentiment).</div></div><div class="qi"><p><b>16.</b> Which model fits learning with plateaus?</p><button class="rev" type="button">Reveal answer</button><div class="ans" hidden>A step function: plt.step(weeks, level, where=&quot;post&quot;).</div></div><div class="qi"><p><b>17.</b> Why repeat the first value in a radar chart?</p><button class="rev" type="button">Reveal answer</button><div class="ans" hidden>To close the shape so the outline returns to its start.</div></div><div class="qi"><p><b>18.</b> How do you plot a constant line over t?</p><button class="rev" type="button">Reveal answer</button><div class="ans" hidden>Make y a function of t, e.g. 3000 + 0*t, so it has the same number of points.</div></div><div class="qi"><p><b>19.</b> In the housing model, what happens after t = 2.13?</p><button class="rev" type="button">Reveal answer</button><div class="ans" hidden>Demand rises above supply, so there is a shortage.</div></div><div class="qi"><p><b>20.</b> What does norm.cdf(x) give?</p><button class="rev" type="button">Reveal answer</button><div class="ans" hidden>The area to the left of x, i.e. the probability P(Z &lt;= x).</div></div></div></section><section id="errors"><h2>20. Errors and fixes</h2><div class="item"><h3>Troubleshooting</h3><table><thead><tr><th>Problem</th><th>Likely cause</th><th>Fix</th></tr></thead><tbody><tr><td><code class="i">pattern &#x27;x.ipynb&#x27; matched no files</code></td><td>Wrong file name or folder</td><td>Match the name exactly; keep the notebook in the <b>content</b> folder</td></tr><tr><td><code class="i">NameError: name &#x27;sns&#x27; is not defined</code></td><td>Imports not run</td><td>Run the imports cell first</td></tr><tr><td><code class="i">FileNotFoundError</code></td><td>CSV not uploaded or wrong folder</td><td>Upload to the content folder, check spelling</td></tr><tr><td><code class="i">KeyError: &#x27;col&#x27;</code></td><td>Column name misspelled</td><td>Check with df.head(); names are case-sensitive (e.g. 'fixed acidity')</td></tr><tr><td>Line plot size error</td><td>y has a different length than t</td><td>Make y a function of t, e.g. 3000 + 0*t</td></tr><tr><td>Trend line fails on dates</td><td>Dates still text</td><td>pd.to_datetime, then map(pd.Timestamp.toordinal)</td></tr><tr><td>Two graphs appear for one task</td><td>Extra plt.figure or plt.show</td><td>One plt.figure and one plt.show per task</td></tr><tr><td>Radar shape not closed</td><td>Forgot to repeat the first value</td><td>values + [values[0]] and angles + [0]</td></tr><tr><td>Word cloud shows "the", "and"</td><td>Stop words not removed</td><td>Add stopwords=STOPWORDS</td></tr><tr><td>Survival import fails</td><td>lifelines not installed</td><td>!pip install lifelines</td></tr><tr><td>Map import fails</td><td>geopandas not installed</td><td>pip install geopandas, pip install geodatasets</td></tr></tbody></table></div></section></main></div>
+<script>
+(function(){
+  // copy buttons
+  document.querySelectorAll('.copy').forEach(function(b){
+    b.addEventListener('click',function(){
+      var t=b.parentNode.querySelector('code').innerText;
+      var done=function(){b.textContent='Copied';setTimeout(function(){b.textContent='Copy'},1200)};
+      if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(done,function(){fb(t);done()})}else{fb(t);done()}
+    });
+  });
+  function fb(t){var a=document.createElement('textarea');a.value=t;document.body.appendChild(a);a.select();try{document.execCommand('copy')}catch(e){}document.body.removeChild(a)}
+  // reveal answers
+  document.querySelectorAll('.rev').forEach(function(b){
+    b.addEventListener('click',function(){
+      var a=b.nextElementSibling;a.hidden=!a.hidden;b.textContent=a.hidden?'Reveal answer':'Hide answer';
+    });
+  });
+  // wrap tables for scrolling
+  document.querySelectorAll('table').forEach(function(t){var w=document.createElement('div');w.className='tw';t.parentNode.insertBefore(w,t);w.appendChild(t)});
+  // search
+  var q=document.getElementById('q'),count=document.getElementById('count');
+  var items=[].slice.call(document.querySelectorAll('.item'));
+  var secs=[].slice.call(document.querySelectorAll('section'));
+  function clear(){document.querySelectorAll('mark').forEach(function(m){var p=m.parentNode;p.replaceChild(document.createTextNode(m.textContent),m);p.normalize()})}
+  function mark(root,term){
+    var w=document.createTreeWalker(root,NodeFilter.SHOW_TEXT,{acceptNode:function(n){
+      var p=n.parentNode.nodeName;return (p==='SCRIPT'||p==='STYLE'||p==='BUTTON')?NodeFilter.FILTER_REJECT:NodeFilter.FILTER_ACCEPT}});
+    var hits=[],n;while(n=w.nextNode()){if(n.nodeValue.toLowerCase().indexOf(term)>-1)hits.push(n)}
+    hits.forEach(function(n){
+      var s=n.nodeValue,l=s.toLowerCase(),i=0,f=document.createDocumentFragment(),j;
+      while((j=l.indexOf(term,i))>-1){f.appendChild(document.createTextNode(s.slice(i,j)));var m=document.createElement('mark');m.textContent=s.slice(j,j+term.length);f.appendChild(m);i=j+term.length}
+      f.appendChild(document.createTextNode(s.slice(i)));n.parentNode.replaceChild(f,n);
+    });
+  }
+  function run(){
+    var term=q.value.trim().toLowerCase();clear();
+    if(!term){items.forEach(function(i){i.classList.remove('hide')});secs.forEach(function(s){s.classList.remove('hide')});count.textContent='';return}
+    var shown=0;
+    items.forEach(function(i){var ok=i.innerText.toLowerCase().indexOf(term)>-1;i.classList.toggle('hide',!ok);if(ok){shown++;mark(i,term)}});
+    secs.forEach(function(s){s.classList.toggle('hide',!s.querySelector('.item:not(.hide)'))});
+    count.textContent=shown+' match'+(shown===1?'':'es');
+  }
+  q.addEventListener('input',run);
+  document.addEventListener('keydown',function(e){if(e.key==='/'&&document.activeElement!==q){e.preventDefault();q.focus()}});
+})();
+</script></body></html>
