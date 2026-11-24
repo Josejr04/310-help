@@ -2,51 +2,105 @@
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>BANA 310 Open-Book Cheat Sheet</title>
 <style>
-:root{--bg:#fbfaf7;--fg:#1d1d1b;--mut:#6b6a66;--line:#e2dfd7;--card:#fff;--acc:#1f6f6b;--code:#f3f1ea;--hl:#fff3b0}
-@media (prefers-color-scheme:dark){:root{--bg:#161615;--fg:#ecebe6;--mut:#a3a199;--line:#33322f;--card:#1e1e1c;--acc:#5ec4be;--code:#262624;--hl:#5a4d10}}
+:root{
+  --paper:#f5f6f8; --panel:#ffffff; --ink:#0f1b2d; --slate:#566377; --rule:#d8dde5;
+  --cobalt:#2845d6; --cobalt-soft:#e6ebff; --wash:#eef1f6;
+  --code-bg:#101a2b; --code-fg:#dbe4f3; --code-rule:#22304a;
+  --k:#8fb4ff; --s:#a6e3a1; --n:#ffc27a; --c:#7587a3; --f:#f2a7d1;
+  --serif:"Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif;
+  --sans:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  --mono:ui-monospace,"SF Mono","Cascadia Code",Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme:dark){
+  :root{--paper:#0c1320;--panel:#121b2c;--ink:#e8edf6;--slate:#9aa8bd;--rule:#25324a;--cobalt:#8fa6ff;--cobalt-soft:#1b2a52;--wash:#16213a;--code-bg:#0a101c;--code-rule:#1d2a42}
+}
 *{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.55 system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
-header{padding:28px 20px 14px;max-width:1100px;margin:0 auto}
-h1{margin:0 0 4px;font-size:1.8rem}
-header p{margin:0;color:var(--mut)}
-.bar{position:sticky;top:0;z-index:10;background:var(--bg);border-bottom:1px solid var(--line);padding:10px 20px}
-.bar .in{max-width:1100px;margin:0 auto;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
-#q{flex:1;min-width:220px;padding:10px 12px;font-size:1rem;border:1px solid var(--line);border-radius:8px;background:var(--card);color:var(--fg)}
-#count{color:var(--mut);font-size:.9rem}
-.wrap{max-width:1100px;margin:0 auto;padding:0 20px 60px;display:grid;grid-template-columns:230px 1fr;gap:28px}
-nav{position:sticky;top:64px;align-self:start;max-height:calc(100vh - 80px);overflow:auto;font-size:.9rem;padding-top:16px}
-nav a{display:block;padding:4px 8px;color:var(--fg);text-decoration:none;border-radius:6px}
-nav a:hover{background:var(--code)}
-main{min-width:0}
-section{padding-top:20px}
-section>h2{font-size:1.35rem;margin:10px 0;border-bottom:2px solid var(--acc);padding-bottom:4px}
-.item{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px 16px;margin:14px 0}
-.item h3{margin:0 0 8px;font-size:1.05rem;color:var(--acc)}
-.use{margin:0 0 8px;color:var(--mut);font-size:.95rem}
-.code{position:relative;margin:10px 0}
-pre{margin:0;background:var(--code);border:1px solid var(--line);border-radius:8px;padding:12px;overflow:auto;font:13px/1.5 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
-code.i{background:var(--code);border:1px solid var(--line);border-radius:4px;padding:0 4px;font:13px ui-monospace,Menlo,Consolas,monospace;word-break:break-word}
-.copy{position:absolute;top:6px;right:6px;font-size:12px;padding:3px 9px;border:1px solid var(--line);background:var(--card);color:var(--fg);border-radius:6px;cursor:pointer}
-.copy:hover{border-color:var(--acc)}
-table{border-collapse:collapse;width:100%;margin:10px 0;font-size:.93rem}
-th,td{border:1px solid var(--line);padding:6px 9px;text-align:left;vertical-align:top}
-th{background:var(--code)}
-.tw{overflow-x:auto}
-ul,ol{margin:6px 0 6px 22px;padding:0}
-li{margin:3px 0}
-mark{background:var(--hl);color:inherit;border-radius:2px}
-.qi{border-top:1px solid var(--line);padding:10px 0}
+html{scroll-behavior:smooth;scroll-padding-top:84px}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.6 var(--sans);-webkit-font-smoothing:antialiased}
+a{color:var(--cobalt)}
+:focus-visible{outline:2px solid var(--cobalt);outline-offset:2px;border-radius:4px}
+
+.top{position:sticky;top:0;z-index:20;background:color-mix(in srgb,var(--paper) 92%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--rule)}
+.top .in{max-width:1180px;margin:0 auto;padding:12px 24px;display:flex;align-items:center;gap:20px}
+.brand{font:700 1.02rem/1.2 var(--serif);white-space:nowrap;letter-spacing:.01em}
+.search{flex:1;position:relative}
+#q{width:100%;padding:10px 90px 10px 14px;font:inherit;font-size:.95rem;color:var(--ink);background:var(--panel);border:1px solid var(--rule);border-radius:10px}
+#q::placeholder{color:var(--slate)}
+#q:focus{border-color:var(--cobalt);outline:none;box-shadow:0 0 0 3px var(--cobalt-soft)}
+#count{position:absolute;right:12px;top:50%;transform:translateY(-50%);font-size:.8rem;color:var(--slate)}
+kbd{font:.75rem var(--mono);border:1px solid var(--rule);border-bottom-width:2px;border-radius:5px;padding:1px 6px;background:var(--panel);color:var(--slate)}
+
+.hero{max-width:1180px;margin:0 auto;padding:44px 24px 8px}
+.hero h1{font:700 clamp(2rem,4.4vw,3.1rem)/1.08 var(--serif);letter-spacing:-.015em;margin:0 0 12px}
+.hero p{margin:0;max-width:62ch;color:var(--slate);font-size:1.05rem}
+.jump{display:flex;flex-wrap:wrap;gap:8px;margin-top:22px}
+.jump a{font-size:.9rem;text-decoration:none;color:var(--ink);background:var(--panel);border:1px solid var(--rule);border-radius:999px;padding:6px 14px}
+.jump a:hover{border-color:var(--cobalt);color:var(--cobalt)}
+
+.wrap{max-width:1180px;margin:0 auto;padding:12px 24px 80px;display:grid;grid-template-columns:240px minmax(0,1fr);gap:48px}
+nav{position:sticky;top:76px;align-self:start;max-height:calc(100vh - 92px);overflow:auto;padding:24px 0;font-size:.88rem}
+nav a{display:block;padding:6px 12px;margin-left:-12px;color:var(--slate);text-decoration:none;border-left:2px solid transparent}
+nav a:hover{color:var(--ink)}
+nav a.on{color:var(--cobalt);border-left-color:var(--cobalt);background:linear-gradient(90deg,var(--cobalt-soft),transparent);font-weight:600}
+
+main{max-width:820px;min-width:0}
+section{padding-top:44px}
+section>h2{font:700 1.75rem/1.2 var(--serif);letter-spacing:-.01em;margin:0 0 6px;padding-bottom:12px;border-bottom:2px solid var(--ink)}
+.item{padding:22px 0 6px;border-top:1px solid var(--rule)}
+section>h2+.item{border-top:0}
+.item h3{font:650 1.05rem/1.3 var(--sans);margin:0 0 10px;color:var(--ink)}
+.item p{margin:8px 0;max-width:72ch}
+.use{color:var(--slate);font-size:.94rem}
+.use b{color:var(--ink)}
+ul,ol{margin:8px 0 8px 22px;padding:0;max-width:72ch}
+li{margin:5px 0}
+li::marker{color:var(--cobalt)}
+
+.code{position:relative;margin:14px 0}
+pre{margin:0;background:var(--code-bg);color:var(--code-fg);border:1px solid var(--code-rule);border-left:3px solid var(--cobalt);border-radius:10px;padding:16px 18px;overflow:auto;font:13px/1.65 var(--mono);tab-size:4}
+pre code{font:inherit}
+.t-k{color:var(--k)} .t-s{color:var(--s)} .t-n{color:var(--n)} .t-c{color:var(--c);font-style:italic} .t-f{color:var(--f)}
+.copy{position:absolute;top:8px;right:8px;font:600 .75rem var(--sans);padding:4px 10px;border:1px solid var(--code-rule);background:#16233a;color:#c7d3e8;border-radius:6px;cursor:pointer;opacity:0;transition:opacity .15s}
+.code:hover .copy,.copy:focus-visible{opacity:1}
+.copy:hover{background:var(--cobalt);border-color:var(--cobalt);color:#fff}
+@media (hover:none){.copy{opacity:1}}
+code.i{font:.84em var(--mono);background:var(--wash);color:var(--ink);border:1px solid var(--rule);border-radius:5px;padding:1px 5px;word-break:break-word}
+
+.tw{overflow-x:auto;margin:14px 0;border:1px solid var(--rule);border-radius:10px;background:var(--panel)}
+table{border-collapse:collapse;width:100%;font-size:.9rem}
+th{background:var(--wash);font-weight:650;text-align:left;border-bottom:1px solid var(--rule)}
+th,td{padding:9px 14px;vertical-align:top}
+td{border-top:1px solid var(--rule)}
+tbody tr:first-child td{border-top:0}
+tbody tr:hover td{background:color-mix(in srgb,var(--wash) 60%,transparent)}
+td:first-child{min-width:150px}
+
+mark{background:#ffe27a;color:#1a1400;border-radius:3px;padding:0 1px}
+.qi{padding:14px 0;border-top:1px solid var(--rule)}
 .qi:first-child{border-top:0}
-.rev{font-size:13px;padding:4px 10px;border:1px solid var(--line);background:var(--card);color:var(--fg);border-radius:6px;cursor:pointer}
-.ans{margin-top:6px;padding:8px 10px;background:var(--code);border-left:3px solid var(--acc);border-radius:4px}
+.qi p{margin:0 0 8px}
+.rev{font:600 .82rem var(--sans);padding:6px 14px;border:1px solid var(--cobalt);background:transparent;color:var(--cobalt);border-radius:8px;cursor:pointer}
+.rev:hover{background:var(--cobalt);color:#fff}
+.ans{margin-top:10px;padding:10px 14px;background:var(--cobalt-soft);border-radius:8px;max-width:72ch}
 .hide{display:none!important}
-@media (max-width:820px){.wrap{grid-template-columns:1fr}nav{display:none}}
-@media print{.bar,nav,.copy,.rev{display:none}.ans[hidden]{display:block!important}.wrap{display:block}.item{break-inside:avoid-page}}
+footer{max-width:1180px;margin:0 auto;padding:0 24px 40px;color:var(--slate);font-size:.88rem}
+
+@media (max-width:900px){.wrap{grid-template-columns:minmax(0,1fr);gap:0}nav{display:none}.brand,kbd{display:none}.hero{padding-top:28px}}
+@media print{
+  .top,nav,.copy,.rev,.jump{display:none}.wrap{display:block;padding:0}main{max-width:none}
+  pre{background:#fff;color:#000;border:1px solid #bbb;border-left:3px solid #000;white-space:pre-wrap}
+  .t-k,.t-s,.t-n,.t-c,.t-f{color:#000}.ans[hidden]{display:block!important}.item{break-inside:avoid-page}
+  body{background:#fff;color:#000}
+}
 </style></head><body>
-<header><h1>BANA 310 Open-Book Cheat Sheet</h1>
-<p>Data Visualization for Business. Everything here comes from class slides, example notebooks and class CSVs. Press / to search.</p></header>
-<div class="bar"><div class="in"><input id="q" type="search" placeholder="Search a function, chart or term (e.g. pointplot, degree, stopwords)" autocomplete="off"><span id="count"></span></div></div>
-<div class="wrap"><nav><a href="#rules">1. Quiz-day rules and steps</a><a href="#setup">2. Setup, data handling and styling</a><a href="#finder">3. Which chart do I use?</a><a href="#categorical">4. Categorical variables</a><a href="#numeric">5. Numeric variables</a><a href="#groups">6. Numeric variable across groups (multivariate)</a><a href="#timeseries">7. Time series and trend line</a><a href="#models">8. Analytical models</a><a href="#interactive">9. Interactive graphs (sliders)</a><a href="#threed">10. 3D visualization</a><a href="#geo">11. Geo-spatial maps</a><a href="#network">12. Network visualization</a><a href="#radar">13. Radar chart</a><a href="#wordcloud">14. Text visualization: word cloud</a><a href="#bubble">15. Bubble chart (plotly)</a><a href="#survival">16. Survival analysis for business</a><a href="#project">17. Mushroom project (review of old charts)</a><a href="#concepts">18. Concepts and terms (glossary)</a><a href="#selftest">19. Rapid-fire self-test</a><a href="#errors">20. Errors and fixes</a></nav><main><section id="rules"><h2>1. Quiz-day rules and steps</h2><div class="item"><h3>Rules from class</h3><ul><li>Each coding task gets <b>exactly one graph</b>. More or fewer graphs lose points (applies to the test too).</li><li>Use <b>only functions taught in class</b>. Anything else can cost points. AI tools are allowed only with class material.</li><li>The radar exercise says: avoid unnecessary variables, repeated logic, redundant functions, or code that does not directly produce the graph. Points are deducted for redundant code.</li><li>A line plotted over <code class="i">t</code> must have y-values with the <b>same number of points as t</b>, even for a constant line (<code class="i">3000 + 0*t</code>).</li><li>Some important coding details (arguments, settings, error handling) were taught only in class exercises, so your own notes matter too.</li></ul></div><div class="item"><h3>Step by step on quiz day</h3><ol><li>Run the imports cell first (see section 2).</li><li>Load the CSV: <code class="i">df = pd.read_csv(&#x27;file.csv&#x27;)</code> then <code class="i">df.head()</code> to see the column names.</li><li>Read the task. Ask: what am I comparing? Pick the chart from the finder (section 3).</li><li>Start each graph with <code class="i">plt.figure(figsize=(5, 3))</code> and end it with <code class="i">plt.show()</code>.</li><li>If asked for a finding, write one plain sentence about what the graph shows.</li><li>Export: <code class="i">!jupyter nbconvert --to html yourfile.ipynb</code> (keep the notebook in the <b>content</b> folder).</li><li>Check: how many graphs did each task produce? Exactly one.</li></ol></div></section><section id="setup"><h2>2. Setup, data handling and styling</h2><div class="item"><h3>Imports (run first)</h3><div class="code"><button class="copy" type="button">Copy</button><pre><code>import pandas as pd
+<div class="top"><div class="in"><div class="brand">BANA 310</div>
+<div class="search"><input id="q" type="search" placeholder="Search a function, chart or term, like pointplot or stopwords" autocomplete="off" aria-label="Search the cheat sheet"><span id="count" aria-live="polite"></span></div>
+<kbd title="Press / to search">/</kbd></div></div>
+<header class="hero"><h1>Open-book cheat sheet</h1>
+<p>Every function, chart and concept from class, with the code to copy, when to use it, and what each setting does. Built from the slides, example notebooks and class CSVs.</p>
+<div class="jump"><a href="#rules">Quiz-day steps</a><a href="#finder">Which chart do I use?</a><a href="#concepts">Glossary</a><a href="#selftest">Self-test</a><a href="#errors">Errors and fixes</a></div></header>
+<div class="wrap"><nav aria-label="Sections"><a href="#rules">1. Quiz-day rules and steps</a><a href="#setup">2. Setup, data handling and styling</a><a href="#finder">3. Which chart do I use?</a><a href="#categorical">4. Categorical variables</a><a href="#numeric">5. Numeric variables</a><a href="#groups">6. Numeric variable across groups (multivariate)</a><a href="#timeseries">7. Time series and trend line</a><a href="#models">8. Analytical models</a><a href="#interactive">9. Interactive graphs (sliders)</a><a href="#threed">10. 3D visualization</a><a href="#geo">11. Geo-spatial maps</a><a href="#network">12. Network visualization</a><a href="#radar">13. Radar chart</a><a href="#wordcloud">14. Text visualization: word cloud</a><a href="#bubble">15. Bubble chart (plotly)</a><a href="#survival">16. Survival analysis for business</a><a href="#project">17. Mushroom project (review of old charts)</a><a href="#concepts">18. Concepts and terms (glossary)</a><a href="#selftest">19. Rapid-fire self-test</a><a href="#errors">20. Errors and fixes</a></nav><main><section id="rules"><h2>1. Quiz-day rules and steps</h2><div class="item"><h3>Rules from class</h3><ul><li>Each coding task gets <b>exactly one graph</b>. More or fewer graphs lose points (applies to the test too).</li><li>Use <b>only functions taught in class</b>. Anything else can cost points. AI tools are allowed only with class material.</li><li>The radar exercise says: avoid unnecessary variables, repeated logic, redundant functions, or code that does not directly produce the graph. Points are deducted for redundant code.</li><li>A line plotted over <code class="i">t</code> must have y-values with the <b>same number of points as t</b>, even for a constant line (<code class="i">3000 + 0*t</code>).</li><li>Some important coding details (arguments, settings, error handling) were taught only in class exercises, so your own notes matter too.</li></ul></div><div class="item"><h3>Step by step on quiz day</h3><ol><li>Run the imports cell first (see section 2).</li><li>Load the CSV: <code class="i">df = pd.read_csv(&#x27;file.csv&#x27;)</code> then <code class="i">df.head()</code> to see the column names.</li><li>Read the task. Ask: what am I comparing? Pick the chart from the finder (section 3).</li><li>Start each graph with <code class="i">plt.figure(figsize=(5, 3))</code> and end it with <code class="i">plt.show()</code>.</li><li>If asked for a finding, write one plain sentence about what the graph shows.</li><li>Export: <code class="i">!jupyter nbconvert --to html yourfile.ipynb</code> (keep the notebook in the <b>content</b> folder).</li><li>Check: how many graphs did each task produce? Exactly one.</li></ol></div></section><section id="setup"><h2>2. Setup, data handling and styling</h2><div class="item"><h3>Imports (run first)</h3><div class="code"><button class="copy" type="button">Copy</button><pre><code>import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns</code></pre></div><p>Libraries added by newer topics (import only what the task needs):</p><div class="code"><button class="copy" type="button">Copy</button><pre><code>import networkx as nx                              # network
@@ -555,34 +609,47 @@ plt.show()
 # task 8: point plot by two categories
 plt.figure(figsize=(5, 3))
 sns.pointplot(data=df, x=&#x27;cap-shape&#x27;, y=&#x27;stem-height&#x27;, hue=&#x27;class&#x27;)
-plt.show()</code></pre></div><p>Each task is one graph. Note that task 4 uses the stacking technique (two <code class="i">kdeplot</code> calls, one figure, one <code class="i">plt.show()</code>).</p></div></section><section id="concepts"><h2>18. Concepts and terms (glossary)</h2><div class="item"><h3>Lecture concepts</h3><table><thead><tr><th>Term</th><th>Plain-English meaning</th></tr></thead><tbody><tr><td>Data to visualize to insight</td><td>Rows of data become a graph, and the graph's pattern becomes a business decision</td></tr><tr><td>Display, Interpret, Decide</td><td>Choose the right graph, explain the pattern, translate it into action</td></tr><tr><td>Anscombe's quartet</td><td>Four datasets with almost identical statistics but very different graphs; proof you must visualize</td></tr><tr><td>Channels</td><td>How a graph encodes data: position, color, size, shape</td></tr><tr><td>Cholera map (1854 London)</td><td>A map of cases found the source of the outbreak; a map stopped cholera</td></tr><tr><td>Stroke Valley</td><td>A map showing a region with unusually high stroke mortality; diet may contribute</td></tr><tr><td>Logic, code, business insight</td><td>Every topic connects why the tool fits, how to code it, and what the business does with it</td></tr><tr><td>Colab notebook</td><td>Browser-based notebook: write Python, run cells, add text, share without installing</td></tr><tr><td>pandas, NumPy, Matplotlib, Seaborn</td><td>Data tables, numbers, base plotting, statistical charts</td></tr></tbody></table></div><div class="item"><h3>Data and chart terms</h3><table><thead><tr><th>Term</th><th>Plain-English meaning</th></tr></thead><tbody><tr><td>Categorical variable</td><td>Labels or groups (gender, product type)</td></tr><tr><td>Numeric variable</td><td>Numbers (math score, price)</td></tr><tr><td>Multivariate</td><td>Two or more variables compared together; use hue to split by group</td></tr><tr><td>hue</td><td>Colors the graph by a category so groups can be compared</td></tr><tr><td>palette</td><td>Colors for each hue group, often a dict like {'female':'hotpink'}</td></tr><tr><td>Histogram / bin</td><td>Bars counting values in each range / one such range</td></tr><tr><td>KDE</td><td>Kernel density estimate: smooth curve version of a histogram</td></tr><tr><td>common_norm=False</td><td>Scale each group's KDE on its own so group sizes do not distort shapes</td></tr><tr><td>Quartiles Q1, median, Q3</td><td>Values at 25%, 50%, 75% of sorted data</td></tr><tr><td>IQR</td><td>Q3 minus Q1, the width of the box</td></tr><tr><td>Outlier</td><td>A point beyond Q1 - 1.5 x IQR or Q3 + 1.5 x IQR</td></tr><tr><td>Whisker</td><td>Box-plot line to the last point inside the outlier limits (not always the true min or max)</td></tr><tr><td>Confidence interval</td><td>Range likely to contain the true mean; the line on a point plot (95%)</td></tr><tr><td>Correlation coefficient</td><td>-1 to 1 for linear relationship: near 1 strong positive, near -1 strong negative, near 0 weak; not causation</td></tr><tr><td>Heatmap</td><td>Color grid of values, used for correlations</td></tr><tr><td>Contour plot</td><td>2D KDE drawn as rings; denser rings = more data</td></tr><tr><td>Trend line</td><td>A fitted curve through time-series data (class used degree 2)</td></tr><tr><td>Ordinal date</td><td>A date turned into a day count so math works</td></tr></tbody></table></div><div class="item"><h3>Newer topic terms</h3><table><thead><tr><th>Term</th><th>Plain-English meaning</th></tr></thead><tbody><tr><td>Analytical model</td><td>A formula imitating a real behavior, then visualized</td></tr><tr><td>Random walk</td><td>Path made of cumulative random steps</td></tr><tr><td>Step function</td><td>Stays flat, then jumps (learning with plateaus)</td></tr><tr><td>Power law</td><td>A few items hold most of the total (rich vs poor)</td></tr><tr><td>Equilibrium</td><td>Supply equals demand</td></tr><tr><td>Slider / widget</td><td>A control that changes a parameter so the graph updates</td></tr><tr><td>meshgrid</td><td>Turns two lists into a grid of all x, y pairs for 3D</td></tr><tr><td>Latitude / longitude</td><td>North-south / east-west position; y / x on a map</td></tr><tr><td>GeoDataFrame</td><td>A table with a geometry column of map points</td></tr><tr><td>Network, node, edge</td><td>Entities joined by links</td></tr><tr><td>Degree</td><td>Number of edges on a node; in-degree and out-degree for directed networks</td></tr><tr><td>Radar chart</td><td>Several variables for one or more entities on the same scale</td></tr><tr><td>Word cloud / stop words / mask</td><td>Word size = frequency / common words removed / image shape</td></tr><tr><td>Bubble chart</td><td>Scatter with bubble size for a third variable and color for a fourth</td></tr><tr><td>Survival analysis</td><td>Estimates how long until an event (popularity below 40% of launch)</td></tr><tr><td>Censored observation</td><td>Event had not happened when observation ended (outcome = 0)</td></tr><tr><td>Weibull model, lambda, k</td><td>Survival curve with scale lambda and shape k</td></tr><tr><td>S(t)</td><td>Survival probability at time t; never increases</td></tr></tbody></table></div></section><section id="selftest"><h2>19. Rapid-fire self-test</h2><div class="item"><h3>Cover the answer, then reveal</h3><div class="qi"><p><b>1.</b> A column has 8 labels. Pie chart or count plot?</p><button class="rev" type="button">Reveal answer</button><div class="ans" hidden>Count plot. Pie is for 5 labels or fewer.</div></div><div class="qi"><p><b>2.</b> What does np.linspace(0, 10, 5) return?</p><button class="rev" type="button">Reveal answer</button><div class="ans" hidden>[0, 2.5, 5, 7.5, 10]. Five numbers, both ends included.</div></div><div class="qi"><p><b>3.</b> What does df.iloc[:, 0:11] select?</p><button class="rev" type="button">Reveal answer</button><div class="ans" hidden>All rows, columns 0 to 10. The end (11) is excluded.</div></div><div class="qi"><p><b>4.</b> Which chart compares math score by gender?</p><button class="rev" type="button">Reveal answer</button><div class="ans" hidden>Box plot (catplot kind=&quot;box&quot;), violin, point plot, or KDE with hue.</div></div><div class="qi"><p><b>5.</b> Where do box plot whiskers end?</p><button class="rev" type="button">Reveal answer</button><div class="ans" hidden>At the last point inside the outlier limits, not at the true min and max.</div></div><div class="qi"><p><b>6.</b> What are the outlier limits?</p><button class="rev" type="button">Reveal answer</button><div class="ans" hidden>Q1 - 1.5 x IQR and Q3 + 1.5 x IQR, where IQR = Q3 - Q1.</div></div><div class="qi"><p><b>7.</b> What does common_norm=False do?</p><button class="rev" type="button">Reveal answer</button><div class="ans" hidden>Scales each group&#x27;s KDE separately so group sizes do not distort the comparison.</div></div><div class="qi"><p><b>8.</b> What does a heatmap cell of 0.9 mean?</p><button class="rev" type="button">Reveal answer</button><div class="ans" hidden>Strong positive linear relationship. It does not prove causation.</div></div><div class="qi"><p><b>9.</b> Which two steps come before np.polyfit on dates?</p><button class="rev" type="button">Reveal answer</button><div class="ans" hidden>pd.to_datetime, then map(pd.Timestamp.toordinal).</div></div><div class="qi"><p><b>10.</b> What does errorbar=(&quot;pi&quot;, 100) show on a point plot?</p><button class="rev" type="button">Reveal answer</button><div class="ans" hidden>The full min-to-max range instead of the 95% confidence interval.</div></div><div class="qi"><p><b>11.</b> In the social media network, Carmen has degree 4. What does it mean?</p><button class="rev" type="button">Reveal answer</button><div class="ans" hidden>Carmen has 4 connections, the most, so Carmen is the biggest node.</div></div><div class="qi"><p><b>12.</b> Why remove stop words in a word cloud?</p><button class="rev" type="button">Reveal answer</button><div class="ans" hidden>They carry little meaning and would be the biggest words, hiding the themes.</div></div><div class="qi"><p><b>13.</b> Weibull k &lt; 1: what does the survival curve look like?</p><button class="rev" type="button">Reveal answer</button><div class="ans" hidden>Drops fast at first, then flattens.</div></div><div class="qi"><p><b>14.</b> In the survival data, what does outcome = 0 mean?</p><button class="rev" type="button">Reveal answer</button><div class="ans" hidden>Popularity had not fallen below 40% when observation ended (censored).</div></div><div class="qi"><p><b>15.</b> In the bubble chart, what sets bubble size?</p><button class="rev" type="button">Reveal answer</button><div class="ans" hidden>Num_Purchase (x = Mentions, y and color = Sentiment).</div></div><div class="qi"><p><b>16.</b> Which model fits learning with plateaus?</p><button class="rev" type="button">Reveal answer</button><div class="ans" hidden>A step function: plt.step(weeks, level, where=&quot;post&quot;).</div></div><div class="qi"><p><b>17.</b> Why repeat the first value in a radar chart?</p><button class="rev" type="button">Reveal answer</button><div class="ans" hidden>To close the shape so the outline returns to its start.</div></div><div class="qi"><p><b>18.</b> How do you plot a constant line over t?</p><button class="rev" type="button">Reveal answer</button><div class="ans" hidden>Make y a function of t, e.g. 3000 + 0*t, so it has the same number of points.</div></div><div class="qi"><p><b>19.</b> In the housing model, what happens after t = 2.13?</p><button class="rev" type="button">Reveal answer</button><div class="ans" hidden>Demand rises above supply, so there is a shortage.</div></div><div class="qi"><p><b>20.</b> What does norm.cdf(x) give?</p><button class="rev" type="button">Reveal answer</button><div class="ans" hidden>The area to the left of x, i.e. the probability P(Z &lt;= x).</div></div></div></section><section id="errors"><h2>20. Errors and fixes</h2><div class="item"><h3>Troubleshooting</h3><table><thead><tr><th>Problem</th><th>Likely cause</th><th>Fix</th></tr></thead><tbody><tr><td><code class="i">pattern &#x27;x.ipynb&#x27; matched no files</code></td><td>Wrong file name or folder</td><td>Match the name exactly; keep the notebook in the <b>content</b> folder</td></tr><tr><td><code class="i">NameError: name &#x27;sns&#x27; is not defined</code></td><td>Imports not run</td><td>Run the imports cell first</td></tr><tr><td><code class="i">FileNotFoundError</code></td><td>CSV not uploaded or wrong folder</td><td>Upload to the content folder, check spelling</td></tr><tr><td><code class="i">KeyError: &#x27;col&#x27;</code></td><td>Column name misspelled</td><td>Check with df.head(); names are case-sensitive (e.g. 'fixed acidity')</td></tr><tr><td>Line plot size error</td><td>y has a different length than t</td><td>Make y a function of t, e.g. 3000 + 0*t</td></tr><tr><td>Trend line fails on dates</td><td>Dates still text</td><td>pd.to_datetime, then map(pd.Timestamp.toordinal)</td></tr><tr><td>Two graphs appear for one task</td><td>Extra plt.figure or plt.show</td><td>One plt.figure and one plt.show per task</td></tr><tr><td>Radar shape not closed</td><td>Forgot to repeat the first value</td><td>values + [values[0]] and angles + [0]</td></tr><tr><td>Word cloud shows "the", "and"</td><td>Stop words not removed</td><td>Add stopwords=STOPWORDS</td></tr><tr><td>Survival import fails</td><td>lifelines not installed</td><td>!pip install lifelines</td></tr><tr><td>Map import fails</td><td>geopandas not installed</td><td>pip install geopandas, pip install geodatasets</td></tr></tbody></table></div></section></main></div>
+plt.show()</code></pre></div><p>Each task is one graph. Note that task 4 uses the stacking technique (two <code class="i">kdeplot</code> calls, one figure, one <code class="i">plt.show()</code>).</p></div></section><section id="concepts"><h2>18. Concepts and terms (glossary)</h2><div class="item"><h3>Lecture concepts</h3><table><thead><tr><th>Term</th><th>Plain-English meaning</th></tr></thead><tbody><tr><td>Data to visualize to insight</td><td>Rows of data become a graph, and the graph's pattern becomes a business decision</td></tr><tr><td>Display, Interpret, Decide</td><td>Choose the right graph, explain the pattern, translate it into action</td></tr><tr><td>Anscombe's quartet</td><td>Four datasets with almost identical statistics but very different graphs; proof you must visualize</td></tr><tr><td>Channels</td><td>How a graph encodes data: position, color, size, shape</td></tr><tr><td>Cholera map (1854 London)</td><td>A map of cases found the source of the outbreak; a map stopped cholera</td></tr><tr><td>Stroke Valley</td><td>A map showing a region with unusually high stroke mortality; diet may contribute</td></tr><tr><td>Logic, code, business insight</td><td>Every topic connects why the tool fits, how to code it, and what the business does with it</td></tr><tr><td>Colab notebook</td><td>Browser-based notebook: write Python, run cells, add text, share without installing</td></tr><tr><td>pandas, NumPy, Matplotlib, Seaborn</td><td>Data tables, numbers, base plotting, statistical charts</td></tr></tbody></table></div><div class="item"><h3>Data and chart terms</h3><table><thead><tr><th>Term</th><th>Plain-English meaning</th></tr></thead><tbody><tr><td>Categorical variable</td><td>Labels or groups (gender, product type)</td></tr><tr><td>Numeric variable</td><td>Numbers (math score, price)</td></tr><tr><td>Multivariate</td><td>Two or more variables compared together; use hue to split by group</td></tr><tr><td>hue</td><td>Colors the graph by a category so groups can be compared</td></tr><tr><td>palette</td><td>Colors for each hue group, often a dict like {'female':'hotpink'}</td></tr><tr><td>Histogram / bin</td><td>Bars counting values in each range / one such range</td></tr><tr><td>KDE</td><td>Kernel density estimate: smooth curve version of a histogram</td></tr><tr><td>common_norm=False</td><td>Scale each group's KDE on its own so group sizes do not distort shapes</td></tr><tr><td>Quartiles Q1, median, Q3</td><td>Values at 25%, 50%, 75% of sorted data</td></tr><tr><td>IQR</td><td>Q3 minus Q1, the width of the box</td></tr><tr><td>Outlier</td><td>A point beyond Q1 - 1.5 x IQR or Q3 + 1.5 x IQR</td></tr><tr><td>Whisker</td><td>Box-plot line to the last point inside the outlier limits (not always the true min or max)</td></tr><tr><td>Confidence interval</td><td>Range likely to contain the true mean; the line on a point plot (95%)</td></tr><tr><td>Correlation coefficient</td><td>-1 to 1 for linear relationship: near 1 strong positive, near -1 strong negative, near 0 weak; not causation</td></tr><tr><td>Heatmap</td><td>Color grid of values, used for correlations</td></tr><tr><td>Contour plot</td><td>2D KDE drawn as rings; denser rings = more data</td></tr><tr><td>Trend line</td><td>A fitted curve through time-series data (class used degree 2)</td></tr><tr><td>Ordinal date</td><td>A date turned into a day count so math works</td></tr></tbody></table></div><div class="item"><h3>Newer topic terms</h3><table><thead><tr><th>Term</th><th>Plain-English meaning</th></tr></thead><tbody><tr><td>Analytical model</td><td>A formula imitating a real behavior, then visualized</td></tr><tr><td>Random walk</td><td>Path made of cumulative random steps</td></tr><tr><td>Step function</td><td>Stays flat, then jumps (learning with plateaus)</td></tr><tr><td>Power law</td><td>A few items hold most of the total (rich vs poor)</td></tr><tr><td>Equilibrium</td><td>Supply equals demand</td></tr><tr><td>Slider / widget</td><td>A control that changes a parameter so the graph updates</td></tr><tr><td>meshgrid</td><td>Turns two lists into a grid of all x, y pairs for 3D</td></tr><tr><td>Latitude / longitude</td><td>North-south / east-west position; y / x on a map</td></tr><tr><td>GeoDataFrame</td><td>A table with a geometry column of map points</td></tr><tr><td>Network, node, edge</td><td>Entities joined by links</td></tr><tr><td>Degree</td><td>Number of edges on a node; in-degree and out-degree for directed networks</td></tr><tr><td>Radar chart</td><td>Several variables for one or more entities on the same scale</td></tr><tr><td>Word cloud / stop words / mask</td><td>Word size = frequency / common words removed / image shape</td></tr><tr><td>Bubble chart</td><td>Scatter with bubble size for a third variable and color for a fourth</td></tr><tr><td>Survival analysis</td><td>Estimates how long until an event (popularity below 40% of launch)</td></tr><tr><td>Censored observation</td><td>Event had not happened when observation ended (outcome = 0)</td></tr><tr><td>Weibull model, lambda, k</td><td>Survival curve with scale lambda and shape k</td></tr><tr><td>S(t)</td><td>Survival probability at time t; never increases</td></tr></tbody></table></div></section><section id="selftest"><h2>19. Rapid-fire self-test</h2><div class="item"><h3>Cover the answer, then reveal</h3><div class="qi"><p><b>1.</b> A column has 8 labels. Pie chart or count plot?</p><button class="rev" type="button">Show answer</button><div class="ans" hidden>Count plot. Pie is for 5 labels or fewer.</div></div><div class="qi"><p><b>2.</b> What does np.linspace(0, 10, 5) return?</p><button class="rev" type="button">Show answer</button><div class="ans" hidden>[0, 2.5, 5, 7.5, 10]. Five numbers, both ends included.</div></div><div class="qi"><p><b>3.</b> What does df.iloc[:, 0:11] select?</p><button class="rev" type="button">Show answer</button><div class="ans" hidden>All rows, columns 0 to 10. The end (11) is excluded.</div></div><div class="qi"><p><b>4.</b> Which chart compares math score by gender?</p><button class="rev" type="button">Show answer</button><div class="ans" hidden>Box plot (catplot kind=&quot;box&quot;), violin, point plot, or KDE with hue.</div></div><div class="qi"><p><b>5.</b> Where do box plot whiskers end?</p><button class="rev" type="button">Show answer</button><div class="ans" hidden>At the last point inside the outlier limits, not at the true min and max.</div></div><div class="qi"><p><b>6.</b> What are the outlier limits?</p><button class="rev" type="button">Show answer</button><div class="ans" hidden>Q1 - 1.5 x IQR and Q3 + 1.5 x IQR, where IQR = Q3 - Q1.</div></div><div class="qi"><p><b>7.</b> What does common_norm=False do?</p><button class="rev" type="button">Show answer</button><div class="ans" hidden>Scales each group&#x27;s KDE separately so group sizes do not distort the comparison.</div></div><div class="qi"><p><b>8.</b> What does a heatmap cell of 0.9 mean?</p><button class="rev" type="button">Show answer</button><div class="ans" hidden>Strong positive linear relationship. It does not prove causation.</div></div><div class="qi"><p><b>9.</b> Which two steps come before np.polyfit on dates?</p><button class="rev" type="button">Show answer</button><div class="ans" hidden>pd.to_datetime, then map(pd.Timestamp.toordinal).</div></div><div class="qi"><p><b>10.</b> What does errorbar=(&quot;pi&quot;, 100) show on a point plot?</p><button class="rev" type="button">Show answer</button><div class="ans" hidden>The full min-to-max range instead of the 95% confidence interval.</div></div><div class="qi"><p><b>11.</b> In the social media network, Carmen has degree 4. What does it mean?</p><button class="rev" type="button">Show answer</button><div class="ans" hidden>Carmen has 4 connections, the most, so Carmen is the biggest node.</div></div><div class="qi"><p><b>12.</b> Why remove stop words in a word cloud?</p><button class="rev" type="button">Show answer</button><div class="ans" hidden>They carry little meaning and would be the biggest words, hiding the themes.</div></div><div class="qi"><p><b>13.</b> Weibull k &lt; 1: what does the survival curve look like?</p><button class="rev" type="button">Show answer</button><div class="ans" hidden>Drops fast at first, then flattens.</div></div><div class="qi"><p><b>14.</b> In the survival data, what does outcome = 0 mean?</p><button class="rev" type="button">Show answer</button><div class="ans" hidden>Popularity had not fallen below 40% when observation ended (censored).</div></div><div class="qi"><p><b>15.</b> In the bubble chart, what sets bubble size?</p><button class="rev" type="button">Show answer</button><div class="ans" hidden>Num_Purchase (x = Mentions, y and color = Sentiment).</div></div><div class="qi"><p><b>16.</b> Which model fits learning with plateaus?</p><button class="rev" type="button">Show answer</button><div class="ans" hidden>A step function: plt.step(weeks, level, where=&quot;post&quot;).</div></div><div class="qi"><p><b>17.</b> Why repeat the first value in a radar chart?</p><button class="rev" type="button">Show answer</button><div class="ans" hidden>To close the shape so the outline returns to its start.</div></div><div class="qi"><p><b>18.</b> How do you plot a constant line over t?</p><button class="rev" type="button">Show answer</button><div class="ans" hidden>Make y a function of t, e.g. 3000 + 0*t, so it has the same number of points.</div></div><div class="qi"><p><b>19.</b> In the housing model, what happens after t = 2.13?</p><button class="rev" type="button">Show answer</button><div class="ans" hidden>Demand rises above supply, so there is a shortage.</div></div><div class="qi"><p><b>20.</b> What does norm.cdf(x) give?</p><button class="rev" type="button">Show answer</button><div class="ans" hidden>The area to the left of x, i.e. the probability P(Z &lt;= x).</div></div></div></section><section id="errors"><h2>20. Errors and fixes</h2><div class="item"><h3>Troubleshooting</h3><table><thead><tr><th>Problem</th><th>Likely cause</th><th>Fix</th></tr></thead><tbody><tr><td><code class="i">pattern &#x27;x.ipynb&#x27; matched no files</code></td><td>Wrong file name or folder</td><td>Match the name exactly; keep the notebook in the <b>content</b> folder</td></tr><tr><td><code class="i">NameError: name &#x27;sns&#x27; is not defined</code></td><td>Imports not run</td><td>Run the imports cell first</td></tr><tr><td><code class="i">FileNotFoundError</code></td><td>CSV not uploaded or wrong folder</td><td>Upload to the content folder, check spelling</td></tr><tr><td><code class="i">KeyError: &#x27;col&#x27;</code></td><td>Column name misspelled</td><td>Check with df.head(); names are case-sensitive (e.g. 'fixed acidity')</td></tr><tr><td>Line plot size error</td><td>y has a different length than t</td><td>Make y a function of t, e.g. 3000 + 0*t</td></tr><tr><td>Trend line fails on dates</td><td>Dates still text</td><td>pd.to_datetime, then map(pd.Timestamp.toordinal)</td></tr><tr><td>Two graphs appear for one task</td><td>Extra plt.figure or plt.show</td><td>One plt.figure and one plt.show per task</td></tr><tr><td>Radar shape not closed</td><td>Forgot to repeat the first value</td><td>values + [values[0]] and angles + [0]</td></tr><tr><td>Word cloud shows "the", "and"</td><td>Stop words not removed</td><td>Add stopwords=STOPWORDS</td></tr><tr><td>Survival import fails</td><td>lifelines not installed</td><td>!pip install lifelines</td></tr><tr><td>Map import fails</td><td>geopandas not installed</td><td>pip install geopandas, pip install geodatasets</td></tr></tbody></table></div></section></main></div>
+<footer>Use only what was taught in class during the exam. One graph per coding task.</footer>
 <script>
 (function(){
-  // copy buttons
+  var KW=/^(import|from|as|def|return|for|in|if|else|elif|print|True|False|None|and|or|not|lambda|pip|class|with)$/;
+  function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+  function hl(src){
+    var re=/(#[^\n]*)|("""[\s\S]*?"""|"(?:[^"\\\n]|\\.)*"|'(?:[^'\\\n]|\\.)*')|(\b\d+(?:\.\d+)?\b)|([A-Za-z_][A-Za-z_0-9]*)(\s*\()?/g;
+    var out='',last=0,m;
+    while((m=re.exec(src))){
+      out+=esc(src.slice(last,m.index));
+      if(m[1])out+='<span class="t-c">'+esc(m[1])+'</span>';
+      else if(m[2])out+='<span class="t-s">'+esc(m[2])+'</span>';
+      else if(m[3])out+='<span class="t-n">'+m[3]+'</span>';
+      else if(KW.test(m[4]))out+='<span class="t-k">'+m[4]+'</span>'+esc(m[5]||'');
+      else if(m[5])out+='<span class="t-f">'+m[4]+'</span>'+esc(m[5]);
+      else out+=esc(m[4]);
+      last=re.lastIndex;
+    }
+    return out+esc(src.slice(last));
+  }
+  document.querySelectorAll('pre code').forEach(function(c){c.innerHTML=hl(c.textContent)});
+
+  function fb(t){var a=document.createElement('textarea');a.value=t;document.body.appendChild(a);a.select();try{document.execCommand('copy')}catch(e){}document.body.removeChild(a)}
   document.querySelectorAll('.copy').forEach(function(b){
     b.addEventListener('click',function(){
-      var t=b.parentNode.querySelector('code').innerText;
+      var t=b.parentNode.querySelector('code').textContent;
       var done=function(){b.textContent='Copied';setTimeout(function(){b.textContent='Copy'},1200)};
       if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(done,function(){fb(t);done()})}else{fb(t);done()}
     });
   });
-  function fb(t){var a=document.createElement('textarea');a.value=t;document.body.appendChild(a);a.select();try{document.execCommand('copy')}catch(e){}document.body.removeChild(a)}
-  // reveal answers
   document.querySelectorAll('.rev').forEach(function(b){
-    b.addEventListener('click',function(){
-      var a=b.nextElementSibling;a.hidden=!a.hidden;b.textContent=a.hidden?'Reveal answer':'Hide answer';
-    });
+    b.addEventListener('click',function(){var a=b.nextElementSibling;a.hidden=!a.hidden;b.textContent=a.hidden?'Show answer':'Hide answer'});
   });
-  // wrap tables for scrolling
   document.querySelectorAll('table').forEach(function(t){var w=document.createElement('div');w.className='tw';t.parentNode.insertBefore(w,t);w.appendChild(t)});
-  // search
+
   var q=document.getElementById('q'),count=document.getElementById('count');
-  var items=[].slice.call(document.querySelectorAll('.item'));
-  var secs=[].slice.call(document.querySelectorAll('section'));
+  var items=[].slice.call(document.querySelectorAll('.item')),secs=[].slice.call(document.querySelectorAll('section'));
   function clear(){document.querySelectorAll('mark').forEach(function(m){var p=m.parentNode;p.replaceChild(document.createTextNode(m.textContent),m);p.normalize()})}
   function mark(root,term){
-    var w=document.createTreeWalker(root,NodeFilter.SHOW_TEXT,{acceptNode:function(n){
-      var p=n.parentNode.nodeName;return (p==='SCRIPT'||p==='STYLE'||p==='BUTTON')?NodeFilter.FILTER_REJECT:NodeFilter.FILTER_ACCEPT}});
+    var w=document.createTreeWalker(root,NodeFilter.SHOW_TEXT,{acceptNode:function(n){var p=n.parentNode.nodeName;return(p==='BUTTON'||p==='SCRIPT')?NodeFilter.FILTER_REJECT:NodeFilter.FILTER_ACCEPT}});
     var hits=[],n;while(n=w.nextNode()){if(n.nodeValue.toLowerCase().indexOf(term)>-1)hits.push(n)}
     hits.forEach(function(n){
       var s=n.nodeValue,l=s.toLowerCase(),i=0,f=document.createDocumentFragment(),j;
@@ -594,11 +661,22 @@ plt.show()</code></pre></div><p>Each task is one graph. Note that task 4 uses th
     var term=q.value.trim().toLowerCase();clear();
     if(!term){items.forEach(function(i){i.classList.remove('hide')});secs.forEach(function(s){s.classList.remove('hide')});count.textContent='';return}
     var shown=0;
-    items.forEach(function(i){var ok=i.innerText.toLowerCase().indexOf(term)>-1;i.classList.toggle('hide',!ok);if(ok){shown++;mark(i,term)}});
+    items.forEach(function(i){var ok=i.textContent.toLowerCase().indexOf(term)>-1;i.classList.toggle('hide',!ok);if(ok){shown++;mark(i,term)}});
     secs.forEach(function(s){s.classList.toggle('hide',!s.querySelector('.item:not(.hide)'))});
-    count.textContent=shown+' match'+(shown===1?'':'es');
+    count.textContent=shown+(shown===1?' match':' matches');
   }
   q.addEventListener('input',run);
-  document.addEventListener('keydown',function(e){if(e.key==='/'&&document.activeElement!==q){e.preventDefault();q.focus()}});
+  document.addEventListener('keydown',function(e){
+    if(e.key==='/'&&document.activeElement!==q){e.preventDefault();q.focus()}
+    if(e.key==='Escape'&&document.activeElement===q){q.value='';run();q.blur()}
+  });
+
+  var links={};document.querySelectorAll('nav a').forEach(function(a){links[a.getAttribute('href').slice(1)]=a});
+  if('IntersectionObserver' in window){
+    var io=new IntersectionObserver(function(es){es.forEach(function(e){
+      if(e.isIntersecting){Object.keys(links).forEach(function(k){links[k].classList.remove('on')});var a=links[e.target.id];if(a)a.classList.add('on')}
+    })},{rootMargin:'-90px 0px -70% 0px'});
+    secs.forEach(function(s){io.observe(s)});
+  }
 })();
 </script></body></html>
